@@ -312,3 +312,15 @@ body.pub::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:non
 .pcard.sig .tl{font-size:26px;text-shadow:0 2px 12px rgba(0,0,0,.85)}
 .pcard.sig .tl small{text-shadow:0 1px 6px rgba(0,0,0,.9)}
 @media(max-width:620px){.pcard.sig .tl{font-size:20px}}
+
+.carousel{position:relative}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:250px;gap:18px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:4px 2px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.rail::-webkit-scrollbar{display:none}
+.rail>.flip{scroll-snap-align:start}
+.rail:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:20px}
+.car-btn{position:absolute;top:calc(50% - 30px);z-index:3;width:46px;height:46px;border-radius:50%;border:1px solid var(--edge);background:rgba(4,6,13,.75);backdrop-filter:blur(8px);color:#fff;font:400 30px/1 var(--head);cursor:pointer;display:grid;place-items:center;padding-bottom:4px}
+.car-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.car-btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.car-btn.prev{left:-22px}.car-btn.next{right:-22px}
+.car-hint{display:none;margin:2px 0 0;font:500 12px var(--head);color:var(--cyan);opacity:.8}
+@media(max-width:760px){.rail{grid-auto-columns:76%;gap:14px}.car-btn{display:none}.car-hint{display:block}}

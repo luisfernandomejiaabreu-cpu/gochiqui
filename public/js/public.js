@@ -11,7 +11,7 @@ const T = {
     mEje: 'Eje de equilibrio', mRod: 'Elevación de rodilla', mSal: 'Trayectoria', mZona: 'Zona de strike',
     mlbH: 'De La Salvia a Grandes Ligas', mlbP: 'Lanzadores y jugadores que se formaron en GO CHIQUI y llegaron a las Mayores.',
     enMLB: 'llegaron a Grandes Ligas', firmados: 'firmados con organizaciones', verLista: 'Ver la lista completa',
-    colDeb: 'Debut', colNom: 'Pelotero', colPos: 'Posición', colEq: 'Equipo del debut', firmado: 'Firmado', firmasH: 'Firmas', firmasP: 'Prospectos de GO CHIQUI que firmaron con organizaciones de Grandes Ligas.', verFirmas: 'Ver todas las firmas', porConf: 'Por confirmar', equipoAct: 'Hoy',
+    colDeb: 'Debut', colNom: 'Pelotero', colPos: 'Posición', colEq: 'Equipo del debut', firmado: 'Firmado', firmasH: 'Firmas', ant: 'Anterior', sig: 'Siguiente', desliza: 'Desliza para ver más →', firmasP: 'Prospectos de GO CHIQUI que firmaron con organizaciones de Grandes Ligas.', verFirmas: 'Ver todas las firmas', porConf: 'Por confirmar', equipoAct: 'Hoy',
     metH: 'Cómo trabajamos', metP: 'El mismo proceso con cada lanzador, de la primera sesión a la firma.',
     m1h: 'Evaluar', m1p: 'Cada lanzador pasa por Rapsodo: velocidad, giro y quiebre de cada lanzamiento.',
     m2h: 'Afinar', m2p: 'Se corrige la mecánica pieza por pieza, del balance al punto de salida.',
@@ -43,7 +43,7 @@ const T = {
     hudT: 'Mechanics analysis', toca: 'Tap to see his story', volverT: 'Back', firma: 'Signed', debutT: 'Debut', hoy: 'Now', sinHist: 'His story is coming soon.', movH: 'Movement map', movP: 'How much each pitch moves, in inches.', qh: 'Horizontal break (in.)', qv: 'Vertical break (in.)', hudL: 'Rapsodo', hud1: 'in the Big Leagues', hud2: 'prospects per season', hud3: 'developing pitchers since', sinFoto: 'Photo soon', paso: 'Step',
     mEje: 'Balance line', mRod: 'Knee lift', mSal: 'Pitch path', mZona: 'Strike zone',
     mlbH: 'From La Salvia to the Big Leagues', mlbP: 'Pitchers and players who trained at GO CHIQUI and reached the Majors.',
-    enMLB: 'reached the Big Leagues', firmados: 'signed with organizations', verLista: 'See the full list', firmasH: 'Signings', firmasP: 'GO CHIQUI prospects who signed with Major League organizations.', verFirmas: 'See all signings', firmado: 'Signed',
+    enMLB: 'reached the Big Leagues', firmados: 'signed with organizations', verLista: 'See the full list', firmasH: 'Signings', ant: 'Previous', sig: 'Next', desliza: 'Swipe to see more →', firmasP: 'GO CHIQUI prospects who signed with Major League organizations.', verFirmas: 'See all signings', firmado: 'Signed',
     colDeb: 'Debut', colNom: 'Player', colPos: 'Position', colEq: 'Debut team', firmado: 'Signed', porConf: 'To be confirmed', equipoAct: 'Now',
     metH: 'How we work', metP: 'The same process with every pitcher, from the first session to signing day.',
     m1h: 'Evaluate', m1p: 'Every pitcher goes through Rapsodo: velocity, spin and break on each pitch.',
@@ -219,7 +219,13 @@ function firmasSec(list, more) {
     <div class="sec-h"><div><h2>${t('firmasH')}</h2><p>${t('firmasP')}</p></div>${more ? `<a class="btn btn-glass" href="#grandes-ligas">${t('verFirmas')}</a>` : ''}</div>
     <div class="cards sm">${list.map(signCard).join('')}</div></div></section>`;
 }
-function alumniGrid(list) { return `<div class="cards">${list.map(alumniCard).join('')}</div>`; }
+function alumniGrid(list) {
+  return `<div class="carousel">
+    <button class="car-btn prev" type="button" data-car="-1" aria-label="${t('ant')}">‹</button>
+    <div class="rail" tabindex="0">${list.map(alumniCard).join('')}</div>
+    <button class="car-btn next" type="button" data-car="1" aria-label="${t('sig')}">›</button>
+    <p class="car-hint">${t('desliza')}</p></div>`;
+}
 function counts() {
   const list = ST.alumni || [], mlb = list.filter((a) => a.status === 'MLB').length, signed = Number(ST.site.signed_count) || list.length;
   return `<div class="big-count"><div><b>${mlb}</b>${t('enMLB')}</div><div><b>${signed}${ST.site.signed_count ? '+' : ''}</b>${t('firmados')}</div></div>`;
@@ -477,6 +483,8 @@ async function render() {
 }
 document.addEventListener('click', (e) => {
   const f = e.target.closest('[data-filter]'); if (f) { ST.filter = f.dataset.filter; render(); return; }
+  const cb = e.target.closest('[data-car]');
+  if (cb) { const r = cb.parentElement.querySelector('.rail'), c = r.querySelector('.flip'); r.scrollBy({ left: Number(cb.dataset.car) * ((c ? c.offsetWidth : 260) + 18) * (innerWidth > 700 ? 2 : 1), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
   const fl = e.target.closest('.flip'); if (fl) { const on = !fl.classList.contains('on'); fl.classList.toggle('on', on); fl.setAttribute('aria-pressed', String(on)); return; }
   const pt = e.target.closest('[data-ptab]'); if (pt) { ST.ptab = pt.dataset.ptab; render(); return; }
   const pl = e.target.closest('[data-play]'); if (pl) { playVideo(pl.dataset.play); return; }
