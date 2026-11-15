@@ -42,7 +42,7 @@ tail = '''
 // ---------- base de datos: se crea sola y se actualiza ----------
 const SCHEMA = %s;
 const SEED = %s;
-const MIGRATIONS = [{ id: 'bio_v1', steps: %s }, { id: 'contacto_v1', steps: %s }, { id: 'lgarcia_v1', steps: %s }, { id: 'lsantos_v1', steps: %s }, { id: 'arosario_v1', steps: %s }, { id: 'hero_reset_v1', steps: %s }, { id: 'bios_v1', steps: %s }, { id: 'firmas_v1', steps: %s }, { id: 'carela_v1', steps: %s }, { id: 'carela_foto_v1', steps: %s }, { id: 'coaches_v1', steps: %s }, { id: 'edgar_v1', steps: %s }];
+const MIGRATIONS = [{ id: 'bio_v1', steps: %s }, { id: 'contacto_v1', steps: %s }, { id: 'lgarcia_v1', steps: %s }, { id: 'lsantos_v1', steps: %s }, { id: 'arosario_v1', steps: %s }, { id: 'hero_reset_v1', steps: %s }, { id: 'bios_v1', steps: %s }, { id: 'firmas_v1', steps: %s }, { id: 'carela_v1', steps: %s }, { id: 'carela_foto_v1', steps: %s }, { id: 'coaches_v1', steps: %s }, { id: 'edgar_v1', steps: %s }, { id: 'reyes_v1', steps: %s }];
 let dbReady = false;
 async function ensureDb(env) {
   if (dbReady) return;
@@ -64,7 +64,7 @@ export async function onRequest(context) {
   try { await ensureDb(env); } catch (e) { return err('No se pudo preparar la base de datos: ' + e.message, 500); }
   return handle(context);
 }
-''' % (json.dumps(S, ensure_ascii=False, indent=1), json.dumps(D, ensure_ascii=False, indent=1), json.dumps(mig, ensure_ascii=False, indent=1), json.dumps(mig2, ensure_ascii=False, indent=1), json.dumps(mig3, ensure_ascii=False, indent=1), json.dumps(mig4, ensure_ascii=False, indent=1), json.dumps(mig5, ensure_ascii=False, indent=1), json.dumps(mig6, ensure_ascii=False, indent=1), json.dumps(mig7, ensure_ascii=False, indent=1), json.dumps(json.load(open(R + '/build/firmas.json')), ensure_ascii=False, indent=1), json.dumps(json.load(open(R + '/build/carela.json')), ensure_ascii=False, indent=1), json.dumps(json.load(open(R + '/build/carela_foto.json'))), json.dumps(json.load(open(R + '/build/coaches.json')), ensure_ascii=False), json.dumps(json.load(open(R + '/build/edgar.json')), ensure_ascii=False))
+''' % (json.dumps(S, ensure_ascii=False, indent=1), json.dumps(D, ensure_ascii=False, indent=1), json.dumps(mig, ensure_ascii=False, indent=1), json.dumps(mig2, ensure_ascii=False, indent=1), json.dumps(mig3, ensure_ascii=False, indent=1), json.dumps(mig4, ensure_ascii=False, indent=1), json.dumps(mig5, ensure_ascii=False, indent=1), json.dumps(mig6, ensure_ascii=False, indent=1), json.dumps(mig7, ensure_ascii=False, indent=1), json.dumps(json.load(open(R + '/build/firmas.json')), ensure_ascii=False, indent=1), json.dumps(json.load(open(R + '/build/carela.json')), ensure_ascii=False, indent=1), json.dumps(json.load(open(R + '/build/carela_foto.json'))), json.dumps(json.load(open(R + '/build/coaches.json')), ensure_ascii=False), json.dumps(json.load(open(R + '/build/edgar.json')), ensure_ascii=False), json.dumps(json.load(open(R + '/build/reyes.json')), ensure_ascii=False))
 import os as _os
 _os.makedirs(R + '/functions/api', exist_ok=True)
 open(R + '/functions/api/[[path]].js', 'w').write(api + tail)
