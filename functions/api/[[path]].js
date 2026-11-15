@@ -349,7 +349,7 @@ const SCHEMA = [
  "CREATE TABLE IF NOT EXISTS news (\n  id TEXT PRIMARY KEY,\n  title TEXT NOT NULL,\n  date TEXT,\n  image_key TEXT,\n  body TEXT,\n  published INTEGER DEFAULT 1,\n  created_at TEXT DEFAULT (datetime('now'))\n)"
 ];
 const SEED = [
- "INSERT OR IGNORE INTO alumni (id, name, position, status, debut_year, debut_team, needs_review, sort) VALUES\n ('al-neris',      'Héctor Neris',         'Lanzador derecho (RP)', 'MLB', 2014, 'Philadelphia Phillies', 0, 1),\n ('al-seranthony', 'Seranthony Domínguez', 'Lanzador derecho (RP)', 'MLB', 2018, 'Philadelphia Phillies', 0, 2),\n ('al-soto',       'Gregory Soto',         'Lanzador zurdo (RP)',   'MLB', 2019, 'Detroit Tigers',        0, 3),\n ('al-betances',   'Dellin Betances',      'Lanzador derecho (RP)', 'MLB', 2011, 'New York Yankees',      0, 4),\n ('al-lagares',    'Juan Lagares',         'Jardinero central',     'MLB', 2013, 'New York Mets',         0, 5),\n ('al-wperalta',   'Wily Peralta',         'Lanzador derecho',      'MLB', 2012, 'Milwaukee Brewers',     0, 6),\n ('al-jperalta',   'Joel Peralta',         'Lanzador derecho (RP)', 'MLB', 2005, 'Los Angeles Angels',    0, 7),\n ('al-jmartinez',  'Justin Martínez',      'Lanzador derecho (RP)', 'MLB', 2023, 'Arizona Diamondbacks',  0, 8),\n ('al-lgarcia',    'Luis García',          'Lanzador derecho (RP)', 'MLB', 2013, 'Philadelphia Phillies', 0, 9),\n ('al-lsantos',    'Luis Santos',          'Lanzador derecho (RP)', 'MLB', 2017, 'Toronto Blue Jays', 0, 10),\n ('al-arosario',   'Alberto Rosario',      NULL, 'MLB', NULL, NULL, 1, 11),\n ('al-carela',     'Juan Carela',          'Lanzador derecho', 'Firmado', NULL, NULL, 1, 12)",
+ "INSERT OR IGNORE INTO alumni (id, name, position, status, debut_year, debut_team, needs_review, sort) VALUES\n ('al-neris',      'Héctor Neris',         'Lanzador derecho (RP)', 'MLB', 2014, 'Philadelphia Phillies', 0, 1),\n ('al-seranthony', 'Seranthony Domínguez', 'Lanzador derecho (RP)', 'MLB', 2018, 'Philadelphia Phillies', 0, 2),\n ('al-soto',       'Gregory Soto',         'Lanzador zurdo (RP)',   'MLB', 2019, 'Detroit Tigers',        0, 3),\n ('al-betances',   'Dellin Betances',      'Lanzador derecho (RP)', 'MLB', 2011, 'New York Yankees',      0, 4),\n ('al-lagares',    'Juan Lagares',         'Jardinero central',     'MLB', 2013, 'New York Mets',         0, 5),\n ('al-wperalta',   'Wily Peralta',         'Lanzador derecho',      'MLB', 2012, 'Milwaukee Brewers',     0, 6),\n ('al-jperalta',   'Joel Peralta',         'Lanzador derecho (RP)', 'MLB', 2005, 'Los Angeles Angels',    0, 7),\n ('al-jmartinez',  'Justin Martínez',      'Lanzador derecho (RP)', 'MLB', 2023, 'Arizona Diamondbacks',  0, 8),\n ('al-lgarcia',    'Luis García',          'Lanzador derecho (RP)', 'MLB', 2013, 'Philadelphia Phillies', 0, 9),\n ('al-lsantos',    'Luis Santos',          'Lanzador derecho (RP)', 'MLB', 2017, 'Toronto Blue Jays', 0, 10),\n ('al-arosario',   'Alberto Rosario',      'Receptor (C)', 'MLB', 2016, 'St. Louis Cardinals', 0, 11),\n ('al-carela',     'Juan Carela',          'Lanzador derecho', 'Firmado', NULL, NULL, 1, 12)",
  "INSERT OR IGNORE INTO settings (key, value) VALUES\n ('hero_title', 'GO CHIQUI'),\n ('hero_sub_es', 'Desarrollamos talento dominicano con tecnología, disciplina y proyección al béisbol profesional.'),\n ('hero_sub_en', 'We develop Dominican talent through technology, discipline and a clear path to professional baseball.'),\n ('about_es', 'GO CHIQUI Dominicana es una academia de béisbol dedicada a formar peloteros completos: en el terreno, en el gimnasio y en la vida. Evaluamos a cada prospecto con tecnología Rapsodo y seguimos su progreso sesión a sesión.'),\n ('about_en', 'GO CHIQUI Dominicana is a baseball academy dedicated to developing complete players: on the field, in the gym and in life. Every prospect is evaluated with Rapsodo technology and tracked session by session.'),\n ('phone', ''),\n ('whatsapp', ''),\n ('email', ''),\n ('address', 'República Dominicana'),\n ('instagram', ''),\n ('signed_count', '')"
 ];
 const MIGRATIONS = [{ id: 'bio_v1', steps: [
@@ -495,6 +495,18 @@ const MIGRATIONS = [{ id: 'bio_v1', steps: [
    2017,
    "Toronto Blue Jays",
    "Luis Gustavo Santos Paulino, «El Nito». Nació el 11 de febrero de 1991 en Bonao. Lanzador derecho; debutó en Grandes Ligas el 2 de septiembre de 2017 con los Toronto Blue Jays y lanzó con ellos en 2017 y 2018."
+  ]
+ ]
+] }, { id: 'arosario_v1', steps: [
+ [
+  "UPDATE alumni SET position=?, debut_year=?, debut_team=?, signed_year=?, signed_by=?, needs_review=0, bio=COALESCE(bio, ?) WHERE id='al-arosario' AND needs_review=1",
+  [
+   "Receptor (C)",
+   2016,
+   "St. Louis Cardinals",
+   2005,
+   "Los Angeles Angels",
+   "Alberto Rosario nació el 10 de enero de 1987 en Bonao. Receptor que batea y lanza a la derecha, 6'0\" y 190 lb. Firmó en 2005 con los Angels y tras 11 temporadas en ligas menores debutó en Grandes Ligas el 9 de julio de 2016 con los St. Louis Cardinals ante los Brewers, con un sencillo y una carrera impulsada en su primer turno. Jugó con St. Louis en 2016 y 2017."
   ]
  ]
 ] }];
