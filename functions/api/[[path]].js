@@ -514,6 +514,79 @@ const MIGRATIONS = [{ id: 'bio_v1', steps: [
   "UPDATE settings SET value='' WHERE key IN ('hero_player_key', 'hero_key')",
   []
  ]
+] }, { id: 'bios_v1', steps: [
+ [
+  "UPDATE alumni SET bio=?, signed_year=COALESCE(signed_year, ?), signed_by=COALESCE(signed_by, ?) WHERE id=? AND (bio IS NULL OR bio='')",
+  [
+   "Héctor Neris, «Compa N». Nació el 14 de junio de 1989 en Villa Altagracia. Firmó con los Phillies en 2010 y debutó el 5 de agosto de 2014 lanzando la entrada 15 ante los Astros. Fue cerrador de Filadelfia, campeón de la Serie Mundial 2022 con los Astros y parte de un no-hitter combinado ese mismo año. Suma más de 100 salvamentos en Grandes Ligas.",
+   2010,
+   "Philadelphia Phillies",
+   "al-neris"
+  ]
+ ],
+ [
+  "UPDATE alumni SET bio=?, signed_year=COALESCE(signed_year, ?), signed_by=COALESCE(signed_by, ?) WHERE id=? AND (bio IS NULL OR bio='')",
+  [
+   "Seranthony Domínguez, «Sir Anthony». Nació el 25 de noviembre de 1994 en Esperanza, Valverde. Firmó con los Phillies en 2011 y debutó el 7 de mayo de 2018. Tras una cirugía Tommy John en 2020 volvió para lanzar en la Serie Mundial 2022 y ganó el Juego 1. En 2025, con los Blue Jays, volvió a ganar un Juego 1 de Serie Mundial.",
+   2011,
+   "Philadelphia Phillies",
+   "al-seranthony"
+  ]
+ ],
+ [
+  "UPDATE alumni SET bio=?, signed_year=COALESCE(signed_year, ?), signed_by=COALESCE(signed_by, ?) WHERE id=? AND (bio IS NULL OR bio='')",
+  [
+   "Gregory Soto, «Capiro». Lanzador zurdo nacido el 11 de febrero de 1995 en Haina. Firmó con los Tigers en diciembre de 2012 y debutó el 11 de mayo de 2019 ante los Twins. Fue cerrador de Detroit y Juego de Estrellas en 2021 y 2022.",
+   2012,
+   "Detroit Tigers",
+   "al-soto"
+  ]
+ ],
+ [
+  "UPDATE alumni SET bio=?, signed_year=COALESCE(signed_year, ?), signed_by=COALESCE(signed_by, ?) WHERE id=? AND (bio IS NULL OR bio='')",
+  [
+   "Dellin Betances nació el 23 de marzo de 1988 en Washington Heights, Nueva York, de familia dominicana. Los Yankees lo escogieron en el draft de 2006 y debutó el 22 de septiembre de 2011. Fue Juego de Estrellas cuatro años seguidos, de 2014 a 2017, como uno de los relevistas más dominantes de su época.",
+   2006,
+   "New York Yankees",
+   "al-betances"
+  ]
+ ],
+ [
+  "UPDATE alumni SET bio=?, signed_year=COALESCE(signed_year, ?), signed_by=COALESCE(signed_by, ?) WHERE id=? AND (bio IS NULL OR bio='')",
+  [
+   "Juan Lagares nació el 17 de marzo de 1989 en Constanza. Firmó con los Mets en 2006 y debutó el 23 de abril de 2013 ante los Dodgers. Ganó el Guante de Oro de la Liga Nacional en 2014 como jardinero central y fue Jugador Más Valioso de la Serie del Caribe.",
+   2006,
+   "New York Mets",
+   "al-lagares"
+  ]
+ ],
+ [
+  "UPDATE alumni SET bio=?, signed_year=COALESCE(signed_year, ?), signed_by=COALESCE(signed_by, ?) WHERE id=? AND (bio IS NULL OR bio='')",
+  [
+   "Wily Peralta, «Big Wily». Nació el 8 de mayo de 1989 en Samaná. Firmó con los Brewers en 2006 y debutó el 22 de abril de 2012 ante los Rockies. Lanzó en Grandes Ligas con Milwaukee, Kansas City y Detroit.",
+   2006,
+   "Milwaukee Brewers",
+   "al-wperalta"
+  ]
+ ],
+ [
+  "UPDATE alumni SET bio=?, signed_year=COALESCE(signed_year, ?), signed_by=COALESCE(signed_by, ?) WHERE id=? AND (bio IS NULL OR bio='')",
+  [
+   "Joel Peralta, «El Campeón». Nació el 23 de marzo de 1976 en Bonao. Empezó como campocorto y Oakland lo dejó libre; después de trabajar su mecánica con Chiqui Mejía volvió a firmar, con los Angels en 1999, ya como lanzador. Debutó el 25 de mayo de 2005 ponchando a Tadahito Iguchi y jugó 12 temporadas en Grandes Ligas con ocho equipos, entre ellos los Rays.",
+   1999,
+   "Anaheim Angels",
+   "al-jperalta"
+  ]
+ ],
+ [
+  "UPDATE alumni SET bio=?, signed_year=COALESCE(signed_year, ?), signed_by=COALESCE(signed_by, ?) WHERE id=? AND (bio IS NULL OR bio='')",
+  [
+   "Justin Martínez nació el 30 de julio de 2001 en Bonao. Firmó con los Diamondbacks el 5 de marzo de 2018 y, tras una cirugía Tommy John en 2021, debutó en Grandes Ligas el 7 de julio de 2023 ante los Pirates. El 11 de septiembre de 2026 lanzó una entrada inmaculada: tres ponches con nueve lanzamientos.",
+   2018,
+   "Arizona Diamondbacks",
+   "al-jmartinez"
+  ]
+ ]
 ] }];
 let dbReady = false;
 async function ensureDb(env) {
