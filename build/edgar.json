@@ -1,0 +1,1 @@
+[["UPDATE coaches SET role=? WHERE id='co-edgar-rodriguez' AND role='Dirigente'", ["Instructor de catchers"]]]
