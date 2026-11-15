@@ -58,7 +58,7 @@ const adminEval = (e) => ({
   pitches: parse(e.pitches_json, []), hitting: parse(e.hitting_json, {}), publicFields: parse(e.public_fields_json, []),
   notes: e.notes, published: !!e.published, createdAt: e.created_at,
 });
-const fileUrl = (k) => (k ? '/api/file/' + k : null);
+const fileUrl = (k) => (k ? (k[0] === '/' ? k : '/api/file/' + k) : null);
 const pubAlumni = (a) => ({ ...a, photo: fileUrl(a.photo_key), needs_review: !!a.needs_review, published: !!a.published });
 
 async function settings(env) {
@@ -585,6 +585,235 @@ const MIGRATIONS = [{ id: 'bio_v1', steps: [
    2018,
    "Arizona Diamondbacks",
    "al-jmartinez"
+  ]
+ ]
+] }, { id: 'firmas_v1', steps: [
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-moices-semerite",
+   "Moices Semerite",
+   "Lanzador derecho (RHP)",
+   2026,
+   "Atlanta Braves",
+   "/img/firmas/moices-semerite.jpg",
+   100
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-guerrero",
+   "Guerrero",
+   null,
+   2026,
+   "Cleveland Guardians",
+   "/img/firmas/guerrero.jpg",
+   101
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-cesar-nivar",
+   "César Nivar",
+   null,
+   2026,
+   "Cleveland Guardians",
+   "/img/firmas/cesar-nivar.jpg",
+   102
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-jaims-martinez",
+   "Jaims Martínez",
+   null,
+   2026,
+   "Chicago Cubs",
+   "/img/firmas/jaims-martinez.jpg",
+   103
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-dennison-rodriguez",
+   "Dennison Rodríguez",
+   "Lanzador derecho (RHP)",
+   2026,
+   "Pittsburgh Pirates",
+   null,
+   104
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-alieski-torres",
+   "Alieski Torres",
+   "Lanzador",
+   2025,
+   "Toronto Blue Jays",
+   "/img/firmas/alieski-torres.jpg",
+   105
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-aurelvys-batista",
+   "Aurelvys Batista",
+   "Lanzador derecho (RHP)",
+   2025,
+   "New York Mets",
+   "/img/firmas/aurelvys-batista.jpg",
+   106
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-anthony-feliz",
+   "Anthony Feliz",
+   "Lanzador derecho (RHP)",
+   2024,
+   "Chicago Cubs",
+   "/img/firmas/anthony-feliz.jpg",
+   107
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-samuel-savinon",
+   "Samuel Saviñón",
+   "Lanzador derecho (RHP)",
+   2024,
+   "Los Angeles Dodgers",
+   "/img/firmas/samuel-savinon.jpg",
+   108
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-dariel-florentino",
+   "Dariel Florentino",
+   null,
+   2024,
+   "Pittsburgh Pirates",
+   "/img/firmas/dariel-florentino.jpg",
+   109
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-justin-betanse",
+   "Justin Betanse",
+   "Lanzador derecho (RHP)",
+   2024,
+   "Los Angeles Angels",
+   "/img/firmas/justin-betanse.jpg",
+   110
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-hayden-alvarez",
+   "Hayden Álvarez",
+   "Jardinero (OF)",
+   2024,
+   "Los Angeles Angels",
+   "/img/firmas/hayden-alvarez.jpg",
+   111
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-angel-garcia",
+   "Ángel García",
+   "Lanzador derecho (RHP)",
+   2024,
+   "Miami Marlins",
+   "/img/firmas/angel-garcia.jpg",
+   112
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-erick-gutierre",
+   "Erick Gutierre",
+   "Lanzador zurdo (LHP)",
+   2024,
+   "Miami Marlins",
+   "/img/firmas/erick-gutierre.jpg",
+   113
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-daurin-fernandez",
+   "Daurin Fernández",
+   "Infielder (IF)",
+   2024,
+   "Cleveland Guardians",
+   "/img/firmas/daurin-fernandez.jpg",
+   114
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-cristian-hernandez",
+   "Cristian Hernández",
+   "Lanzador derecho (RHP)",
+   2023,
+   "Minnesota Twins",
+   "/img/firmas/cristian-hernandez.jpg",
+   115
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-alexis-de-la-cruz",
+   "Alexis de la Cruz",
+   "Lanzador derecho (RHP)",
+   2023,
+   "Philadelphia Phillies",
+   "/img/firmas/alexis-de-la-cruz.jpg",
+   116
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-erigaldi-perez",
+   "Erigaldi Pérez",
+   "Lanzador derecho (RHP)",
+   2023,
+   "Cleveland Guardians",
+   "/img/firmas/erigaldi-perez.jpg",
+   117
+  ]
+ ],
+ [
+  "INSERT OR IGNORE INTO alumni (id,name,position,status,signed_year,signed_by,photo_key,needs_review,published,sort) VALUES (?,?,?,'Firmado',?,?,?,0,1,?)",
+  [
+   "fi-jose-serrano",
+   "José Serrano",
+   "Lanzador derecho (RHP)",
+   2022,
+   "Houston Astros",
+   "/img/firmas/jose-serrano.jpg",
+   118
   ]
  ]
 ] }];

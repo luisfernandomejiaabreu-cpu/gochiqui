@@ -58,7 +58,7 @@ const adminEval = (e) => ({
   pitches: parse(e.pitches_json, []), hitting: parse(e.hitting_json, {}), publicFields: parse(e.public_fields_json, []),
   notes: e.notes, published: !!e.published, createdAt: e.created_at,
 });
-const fileUrl = (k) => (k ? '/api/file/' + k : null);
+const fileUrl = (k) => (k ? (k[0] === '/' ? k : '/api/file/' + k) : null);
 const pubAlumni = (a) => ({ ...a, photo: fileUrl(a.photo_key), needs_review: !!a.needs_review, published: !!a.published });
 
 async function settings(env) {

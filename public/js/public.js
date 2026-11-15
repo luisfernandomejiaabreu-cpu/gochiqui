@@ -11,7 +11,7 @@ const T = {
     mEje: 'Eje de equilibrio', mRod: 'Elevación de rodilla', mSal: 'Trayectoria', mZona: 'Zona de strike',
     mlbH: 'De La Salvia a Grandes Ligas', mlbP: 'Lanzadores y jugadores que se formaron en GO CHIQUI y llegaron a las Mayores.',
     enMLB: 'llegaron a Grandes Ligas', firmados: 'firmados con organizaciones', verLista: 'Ver la lista completa',
-    colDeb: 'Debut', colNom: 'Pelotero', colPos: 'Posición', colEq: 'Equipo del debut', firmado: 'Firmado', porConf: 'Por confirmar', equipoAct: 'Hoy',
+    colDeb: 'Debut', colNom: 'Pelotero', colPos: 'Posición', colEq: 'Equipo del debut', firmado: 'Firmado', firmasH: 'Firmas', firmasP: 'Prospectos de GO CHIQUI que firmaron con organizaciones de Grandes Ligas.', verFirmas: 'Ver todas las firmas', porConf: 'Por confirmar', equipoAct: 'Hoy',
     metH: 'Cómo trabajamos', metP: 'El mismo proceso con cada lanzador, de la primera sesión a la firma.',
     m1h: 'Evaluar', m1p: 'Cada lanzador pasa por Rapsodo: velocidad, giro y quiebre de cada lanzamiento.',
     m2h: 'Afinar', m2p: 'Se corrige la mecánica pieza por pieza, del balance al punto de salida.',
@@ -43,7 +43,7 @@ const T = {
     hudT: 'Mechanics analysis', toca: 'Tap to see his story', volverT: 'Back', firma: 'Signed', debutT: 'Debut', hoy: 'Now', sinHist: 'His story is coming soon.', movH: 'Movement map', movP: 'How much each pitch moves, in inches.', qh: 'Horizontal break (in.)', qv: 'Vertical break (in.)', hudL: 'Rapsodo', hud1: 'in the Big Leagues', hud2: 'prospects per season', hud3: 'developing pitchers since', sinFoto: 'Photo soon', paso: 'Step',
     mEje: 'Balance line', mRod: 'Knee lift', mSal: 'Pitch path', mZona: 'Strike zone',
     mlbH: 'From La Salvia to the Big Leagues', mlbP: 'Pitchers and players who trained at GO CHIQUI and reached the Majors.',
-    enMLB: 'reached the Big Leagues', firmados: 'signed with organizations', verLista: 'See the full list',
+    enMLB: 'reached the Big Leagues', firmados: 'signed with organizations', verLista: 'See the full list', firmasH: 'Signings', firmasP: 'GO CHIQUI prospects who signed with Major League organizations.', verFirmas: 'See all signings', firmado: 'Signed',
     colDeb: 'Debut', colNom: 'Player', colPos: 'Position', colEq: 'Debut team', firmado: 'Signed', porConf: 'To be confirmed', equipoAct: 'Now',
     metH: 'How we work', metP: 'The same process with every pitcher, from the first session to signing day.',
     m1h: 'Evaluate', m1p: 'Every pitcher goes through Rapsodo: velocity, spin and break on each pitch.',
@@ -203,6 +203,22 @@ function alumniCard(a) {
     </span>
   </button>`;
 }
+const mlbOf = (l) => (l || []).filter((a) => a.status === 'MLB');
+const firmasOf = (l) => (l || []).filter((a) => a.status !== 'MLB').sort((a, b) => (b.signed_year || 0) - (a.signed_year || 0) || (a.sort || 0) - (b.sort || 0));
+function signCard(a) {
+  const ps = posShort(a.position);
+  return `<div class="pcard sig">
+    <div class="art">${a.photo ? `<img class="photo" src="${esc(a.photo)}" alt="${esc(a.name)}" loading="lazy">` : isPitcher(a.position) || !a.position ? SIL() : BATS}</div>
+    <div class="tl">${a.signed_year ? esc(a.signed_year) : '—'}<small>${t('firma')}</small></div>
+    <div class="bt"><h3>${esc(a.name)}</h3>
+      <div class="meta">${ps ? `<span class="chip-pos">${esc(ps)}</span>` : ''}<span>${esc(a.signed_by || '')}</span></div></div></div>`;
+}
+function firmasSec(list, more) {
+  if (!list.length) return '';
+  return `<section class="sec" id="firmas"><div class="wrap">
+    <div class="sec-h"><div><h2>${t('firmasH')}</h2><p>${t('firmasP')}</p></div>${more ? `<a class="btn btn-glass" href="#grandes-ligas">${t('verFirmas')}</a>` : ''}</div>
+    <div class="cards sm">${list.map(signCard).join('')}</div></div></section>`;
+}
 function alumniGrid(list) { return `<div class="cards">${list.map(alumniCard).join('')}</div>`; }
 function counts() {
   const list = ST.alumni || [], mlb = list.filter((a) => a.status === 'MLB').length, signed = Number(ST.site.signed_count) || list.length;
@@ -243,9 +259,10 @@ function vHome() {
   </section>
   <section class="sec band"><div class="wrap">
     <div class="sec-h"><div><h2>${t('mlbH')}</h2><p>${t('mlbP')}</p></div>${counts()}</div>
-    ${alumniGrid(al.slice(0, 8))}
+    ${alumniGrid(mlbOf(al).slice(0, 8))}
     <p style="margin-top:26px"><a class="link" href="#grandes-ligas">${t('verLista')} →</a></p>
   </div></section>
+  ${firmasSec(firmasOf(al).slice(0, 6), true)}
   <section class="sec"><div class="wrap">
     <div class="sec-h"><div><h2>${t('metH')}</h2><p>${t('metP')}</p></div></div>
     <ol class="steps">${[1, 2, 3, 4].map((n) => `<li class="step"><i>${t('paso')} ${n}</i><h3>${t('m' + n + 'h')}</h3><p>${t('m' + n + 'p')}</p></li>`).join('')}</ol>
@@ -272,7 +289,8 @@ function vPlayers() {
 function vAlumni() {
   return `<section class="sec"><div class="wrap">
     <div class="sec-h"><div><h2>${t('mlbH')}</h2><p>${t('mlbP')}</p></div>${counts()}</div>
-    ${alumniGrid(ST.alumni || [])}</div></section>`;
+    ${alumniGrid(mlbOf(ST.alumni))}</div></section>
+  ${firmasSec(firmasOf(ST.alumni), false)}`;
 }
 function vAcademy() {
   const hist = S_('history').split(/\n\s*\n/).filter(Boolean);

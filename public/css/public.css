@@ -303,3 +303,12 @@ body.pub::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:non
 .mv-p circle:last-of-type{filter:drop-shadow(0 0 6px currentColor)}
 .mv-x{position:absolute;bottom:0;left:0;right:0;text-align:center;font:500 12px var(--head);color:var(--muted)}
 .mv-y{position:absolute;left:0;top:0;white-space:nowrap;font:500 12px var(--head);color:var(--muted)}
+
+.cards.sm{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
+.pcard.sig{aspect-ratio:3/4}
+.pcard.sig h3{font-size:18px}
+.pcard.sig .meta span:last-child{font-size:12px}
+@media(max-width:620px){.cards.sm{grid-template-columns:repeat(2,1fr);gap:12px}.pcard.sig h3{font-size:15px}}
+.pcard.sig .tl{font-size:26px;text-shadow:0 2px 12px rgba(0,0,0,.85)}
+.pcard.sig .tl small{text-shadow:0 1px 6px rgba(0,0,0,.9)}
+@media(max-width:620px){.pcard.sig .tl{font-size:20px}}
