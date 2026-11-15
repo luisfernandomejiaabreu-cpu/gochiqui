@@ -17,3 +17,5 @@ Se publica solo en **Cloudflare Pages** cada vez que hay un cambio en la rama `m
 - `build/build.py` — genera `public/_worker.js` (`python3 build/build.py`).
 
 La base de datos se crea y se actualiza sola la primera vez que se abre la web.
+
+_Publicación automática: cada cambio en `main` se publica solo en gochiqui.pages.dev._
