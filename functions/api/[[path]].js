@@ -827,7 +827,7 @@ const MIGRATIONS = [{ id: 'bio_v1', steps: [
    "Juan Daniel Carela, lanzador derecho, nació el 15 de diciembre de 2001. Firmó con los Yankees el 2 de julio de 2018. Fue Lanzador de la Semana en la Florida State League (2022) y en la South Atlantic League (2023). En agosto de 2023 pasó a los White Sox en un cambio por Keynan Middleton, y en noviembre de 2024 lo subieron al roster de 40. Se operó del codo (Tommy John) en 2025 y volvió a lanzar en 2026 con Winston-Salem, en las ligas menores de Chicago."
   ]
  ]
-] }];
+] }, { id: 'carela_foto_v1', steps: [["UPDATE alumni SET photo_key=? WHERE id='al-carela' AND (photo_key IS NULL OR photo_key='')", ["/img/firmas/juan-carela.jpg"]]] }];
 let dbReady = false;
 async function ensureDb(env) {
   if (dbReady) return;

@@ -1,0 +1,1 @@
+[["UPDATE alumni SET photo_key=? WHERE id='al-carela' AND (photo_key IS NULL OR photo_key='')", ["/img/firmas/juan-carela.jpg"]]]
