@@ -217,15 +217,16 @@ function firmasSec(list, more) {
   if (!list.length) return '';
   return `<section class="sec" id="firmas"><div class="wrap">
     <div class="sec-h"><div><h2>${t('firmasH')}</h2><p>${t('firmasP')}</p></div>${more ? `<a class="btn btn-glass" href="#grandes-ligas">${t('verFirmas')}</a>` : ''}</div>
-    <div class="cards sm">${list.map(signCard).join('')}</div></div></section>`;
+    ${carousel(list.map(signCard).join(''), 'sm')}</div></section>`;
 }
-function alumniGrid(list) {
+function carousel(items, cls = '') {
   return `<div class="carousel">
     <button class="car-btn prev" type="button" data-car="-1" aria-label="${t('ant')}">‹</button>
-    <div class="rail" tabindex="0">${list.map(alumniCard).join('')}</div>
+    <div class="rail ${cls}" tabindex="0">${items}</div>
     <button class="car-btn next" type="button" data-car="1" aria-label="${t('sig')}">›</button>
     <p class="car-hint">${t('desliza')}</p></div>`;
 }
+function alumniGrid(list) { return carousel(list.map(alumniCard).join('')); }
 function counts() {
   const list = ST.alumni || [], mlb = list.filter((a) => a.status === 'MLB').length, signed = Number(ST.site.signed_count) || list.length;
   return `<div class="big-count"><div><b>${mlb}</b>${t('enMLB')}</div><div><b>${signed}${ST.site.signed_count ? '+' : ''}</b>${t('firmados')}</div></div>`;
@@ -268,7 +269,7 @@ function vHome() {
     ${alumniGrid(mlbOf(al).slice(0, 8))}
     <p style="margin-top:26px"><a class="link" href="#grandes-ligas">${t('verLista')} →</a></p>
   </div></section>
-  ${firmasSec(firmasOf(al).slice(0, 6), true)}
+  ${firmasSec(firmasOf(al).slice(0, 12), true)}
   <section class="sec"><div class="wrap">
     <div class="sec-h"><div><h2>${t('metH')}</h2><p>${t('metP')}</p></div></div>
     <ol class="steps">${[1, 2, 3, 4].map((n) => `<li class="step"><i>${t('paso')} ${n}</i><h3>${t('m' + n + 'h')}</h3><p>${t('m' + n + 'p')}</p></li>`).join('')}</ol>
@@ -483,8 +484,8 @@ async function render() {
 }
 document.addEventListener('click', (e) => {
   const f = e.target.closest('[data-filter]'); if (f) { ST.filter = f.dataset.filter; render(); return; }
-  const cb = e.target.closest('[data-car]');
-  if (cb) { const r = cb.parentElement.querySelector('.rail'), c = r.querySelector('.flip'); r.scrollBy({ left: Number(cb.dataset.car) * ((c ? c.offsetWidth : 260) + 18) * (innerWidth > 700 ? 2 : 1), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
+  const cb = e.target.closest('[data-car]'); if (cb) holdRail(cb.parentElement.querySelector('.rail'));
+  if (cb) { const r = cb.parentElement.querySelector('.rail'), c = r.firstElementChild; r.scrollBy({ left: Number(cb.dataset.car) * ((c ? c.offsetWidth : 260) + 18) * (innerWidth > 700 ? 2 : 1), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
   const fl = e.target.closest('.flip'); if (fl) { const on = !fl.classList.contains('on'); fl.classList.toggle('on', on); fl.setAttribute('aria-pressed', String(on)); return; }
   const pt = e.target.closest('[data-ptab]'); if (pt) { ST.ptab = pt.dataset.ptab; render(); return; }
   const pl = e.target.closest('[data-play]'); if (pl) { playVideo(pl.dataset.play); return; }
@@ -502,3 +503,18 @@ $('#langBtn').onclick = () => { ST.lang = ST.lang === 'es' ? 'en' : 'es'; try { 
 $('#burger').onclick = () => { const o = $('#nav').classList.toggle('open'); $('#burger').setAttribute('aria-expanded', String(o)); };
 window.addEventListener('hashchange', () => { render(); window.scrollTo(0, 0); });
 loadSite().then(render);
+
+// ---------- rotación automática de los carruseles ----------
+const holdRail = (r, ms = 7000) => { if (r) r.dataset.hold = String(Date.now() + ms); };
+['pointerdown', 'wheel', 'focusin'].forEach((ev) => document.addEventListener(ev, (e) => { const r = e.target.closest && e.target.closest('.rail, .carousel'); if (r) holdRail(r.classList.contains('rail') ? r : r.querySelector('.rail')); }, { passive: true }));
+document.addEventListener('mouseover', (e) => { const r = e.target.closest && e.target.closest('.carousel'); if (r) holdRail(r.querySelector('.rail'), 2500); });
+setInterval(() => {
+  if (document.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.rail').forEach((r) => {
+    if (Number(r.dataset.hold || 0) > Date.now() || r.querySelector('.flip.on') || r.scrollWidth <= r.clientWidth + 4) return;
+    const box = r.getBoundingClientRect(); if (box.bottom < 0 || box.top > innerHeight) return;
+    const step = (r.firstElementChild ? r.firstElementChild.offsetWidth : 250) + parseFloat(getComputedStyle(r).columnGap || 16);
+    if (r.scrollLeft + r.clientWidth >= r.scrollWidth - 8) r.scrollTo({ left: 0, behavior: 'smooth' });
+    else r.scrollBy({ left: step, behavior: 'smooth' });
+  });
+}, 3500);

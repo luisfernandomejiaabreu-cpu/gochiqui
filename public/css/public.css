@@ -324,3 +324,7 @@ body.pub::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:non
 .car-btn.prev{left:-22px}.car-btn.next{right:-22px}
 .car-hint{display:none;margin:2px 0 0;font:500 12px var(--head);color:var(--cyan);opacity:.8}
 @media(max-width:760px){.rail{grid-auto-columns:76%;gap:14px}.car-btn{display:none}.car-hint{display:block}}
+
+.rail>*{scroll-snap-align:start}
+.rail.sm{grid-auto-columns:190px;gap:16px}
+@media(max-width:760px){.rail.sm{grid-auto-columns:58%;gap:12px}}
