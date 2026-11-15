@@ -11,7 +11,7 @@ INSERT OR IGNORE INTO alumni (id, name, position, status, debut_year, debut_team
  ('al-jperalta',   'Joel Peralta',         'Lanzador derecho (RP)', 'MLB', 2005, 'Los Angeles Angels',    0, 7),
  ('al-jmartinez',  'Justin Martínez',      'Lanzador derecho (RP)', 'MLB', 2023, 'Arizona Diamondbacks',  0, 8),
  ('al-lgarcia',    'Luis García',          'Lanzador derecho (RP)', 'MLB', 2013, 'Philadelphia Phillies', 0, 9),
- ('al-lsantos',    'Luis Santos',          NULL, 'MLB', NULL, NULL, 1, 10),
+ ('al-lsantos',    'Luis Santos',          'Lanzador derecho (RP)', 'MLB', 2017, 'Toronto Blue Jays', 0, 10),
  ('al-arosario',   'Alberto Rosario',      NULL, 'MLB', NULL, NULL, 1, 11),
  ('al-carela',     'Juan Carela',          'Lanzador derecho', 'Firmado', NULL, NULL, 1, 12);
 

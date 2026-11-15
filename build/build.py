@@ -25,11 +25,16 @@ mig3 = [
    ['Lanzador derecho (RP)', 2013, 'Philadelphia Phillies',
     'Luis Amado García, «Amadito» o «Compa G». Nació el 30 de enero de 1987 en Santo Domingo. Lanzador relevista derecho de 6\'2" y 240 lb. Debutó en Grandes Ligas el 10 de julio de 2013 con los Philadelphia Phillies, con una entrada en blanco frente a los Washington Nationals.']],
 ]
+mig4 = [
+  ["UPDATE alumni SET position=?, debut_year=?, debut_team=?, needs_review=0, bio=COALESCE(bio, ?) WHERE id='al-lsantos' AND needs_review=1",
+   ['Lanzador derecho (RP)', 2017, 'Toronto Blue Jays',
+    'Luis Gustavo Santos Paulino, «El Nito». Nació el 11 de febrero de 1991 en Bonao. Lanzador derecho; debutó en Grandes Ligas el 2 de septiembre de 2017 con los Toronto Blue Jays y lanzó con ellos en 2017 y 2018.']],
+]
 tail = '''
 // ---------- base de datos: se crea sola y se actualiza ----------
 const SCHEMA = %s;
 const SEED = %s;
-const MIGRATIONS = [{ id: 'bio_v1', steps: %s }, { id: 'contacto_v1', steps: %s }, { id: 'lgarcia_v1', steps: %s }];
+const MIGRATIONS = [{ id: 'bio_v1', steps: %s }, { id: 'contacto_v1', steps: %s }, { id: 'lgarcia_v1', steps: %s }, { id: 'lsantos_v1', steps: %s }];
 let dbReady = false;
 async function ensureDb(env) {
   if (dbReady) return;
@@ -51,7 +56,7 @@ export async function onRequest(context) {
   try { await ensureDb(env); } catch (e) { return err('No se pudo preparar la base de datos: ' + e.message, 500); }
   return handle(context);
 }
-''' % (json.dumps(S, ensure_ascii=False, indent=1), json.dumps(D, ensure_ascii=False, indent=1), json.dumps(mig, ensure_ascii=False, indent=1), json.dumps(mig2, ensure_ascii=False, indent=1), json.dumps(mig3, ensure_ascii=False, indent=1))
+''' % (json.dumps(S, ensure_ascii=False, indent=1), json.dumps(D, ensure_ascii=False, indent=1), json.dumps(mig, ensure_ascii=False, indent=1), json.dumps(mig2, ensure_ascii=False, indent=1), json.dumps(mig3, ensure_ascii=False, indent=1), json.dumps(mig4, ensure_ascii=False, indent=1))
 import os as _os
 _os.makedirs(R + '/functions/api', exist_ok=True)
 open(R + '/functions/api/[[path]].js', 'w').write(api + tail)
