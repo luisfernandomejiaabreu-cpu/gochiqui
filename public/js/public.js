@@ -11,7 +11,7 @@ const T = {
     mEje: 'Eje de equilibrio', mRod: 'Elevación de rodilla', mSal: 'Trayectoria', mZona: 'Zona de strike',
     mlbH: 'De La Salvia a Grandes Ligas', mlbP: 'Lanzadores y jugadores que se formaron en GO CHIQUI y llegaron a las Mayores.',
     enMLB: 'Grandes Ligas', firmados: 'firmados con organizaciones', verLista: 'Ver la lista completa',
-    colDeb: 'Debut', colNom: 'Pelotero', colPos: 'Posición', colEq: 'Equipo del debut', firmado: 'Firmado', firmasH: 'Firmas', ant: 'Anterior', sig: 'Siguiente', desliza: 'Desliza para ver más →', firmasP: 'Prospectos de GO CHIQUI que firmaron con organizaciones de Grandes Ligas.', verFirmas: 'Ver todas las firmas', porConf: 'Por confirmar', equipoAct: 'Hoy',
+    colDeb: 'Debut', colNom: 'Pelotero', colPos: 'Posición', colEq: 'Equipo del debut', firmado: 'Firmado', firmasH: 'Firmas', deckT: 'De GO CHIQUI a Grandes Ligas', deckL: 'Egresados', verFoto: 'Ver foto', ant: 'Anterior', sig: 'Siguiente', desliza: 'Desliza para ver más →', firmasP: 'Prospectos de GO CHIQUI que firmaron con organizaciones de Grandes Ligas.', verFirmas: 'Ver todas las firmas', porConf: 'Por confirmar', equipoAct: 'Hoy',
     metH: 'Cómo trabajamos', metP: 'El mismo proceso con cada lanzador, de la primera sesión a la firma.',
     m1h: 'Evaluar', m1p: 'Cada lanzador pasa por Rapsodo: velocidad, giro y quiebre de cada lanzamiento.',
     m2h: 'Afinar', m2p: 'Se corrige la mecánica pieza por pieza, del balance al punto de salida.',
@@ -43,7 +43,7 @@ const T = {
     hudT: 'Mechanics analysis', toca: 'Tap to see his story', volverT: 'Back', firma: 'Signed', debutT: 'Debut', hoy: 'Now', sinHist: 'His story is coming soon.', movH: 'Movement map', movP: 'How much each pitch moves, in inches.', qh: 'Horizontal break (in.)', qv: 'Vertical break (in.)', hudL: 'Rapsodo', hud1: 'in the Big Leagues', hud2: 'prospects per season', hud3: 'developing pitchers since', sinFoto: 'Photo soon', paso: 'Step',
     mEje: 'Balance line', mRod: 'Knee lift', mSal: 'Pitch path', mZona: 'Strike zone',
     mlbH: 'From La Salvia to the Big Leagues', mlbP: 'Pitchers and players who trained at GO CHIQUI and reached the Majors.',
-    enMLB: 'Big Leagues', firmados: 'signed with organizations', verLista: 'See the full list', firmasH: 'Signings', ant: 'Previous', sig: 'Next', desliza: 'Swipe to see more →', firmasP: 'GO CHIQUI prospects who signed with Major League organizations.', verFirmas: 'See all signings', firmado: 'Signed',
+    enMLB: 'Big Leagues', firmados: 'signed with organizations', verLista: 'See the full list', firmasH: 'Signings', deckT: 'From GO CHIQUI to the Big Leagues', deckL: 'Alumni', verFoto: 'Show photo', ant: 'Previous', sig: 'Next', desliza: 'Swipe to see more →', firmasP: 'GO CHIQUI prospects who signed with Major League organizations.', verFirmas: 'See all signings', firmado: 'Signed',
     colDeb: 'Debut', colNom: 'Player', colPos: 'Position', colEq: 'Debut team', firmado: 'Signed', porConf: 'To be confirmed', equipoAct: 'Now',
     metH: 'How we work', metP: 'The same process with every pitcher, from the first session to signing day.',
     m1h: 'Evaluate', m1p: 'Every pitcher goes through Rapsodo: velocity, spin and break on each pitch.',
@@ -96,6 +96,23 @@ const FLAG_SM = '<svg viewBox="0 0 30 20"><rect width="15" height="10" fill="#00
 const SIL = (cls = 'sil') => `<svg class="${cls}" viewBox="0 0 180 259" aria-hidden="true"><defs><linearGradient id="silg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#9FB8F0"/></linearGradient></defs><g transform="translate(180 0) scale(-1 1)"><path d="${PITCHER_PATH}" fill="url(#silg)"/></g></svg>`;
 const BATS = '<svg class="sil bats" viewBox="0 0 120 120" aria-hidden="true"><g fill="#E8EEFF"><path d="M18 8l9-6 70 92-4 10-9-2z"/><path d="M102 8l-9-6-70 92 4 10 9-2z"/></g><circle cx="60" cy="86" r="17" fill="#fff"/><path d="M50 73c5 7 5 19 0 26M70 73c-5 7-5 19 0 26" fill="none" stroke="#FF2E4C" stroke-width="2.4" stroke-dasharray="2.4 2.4"/></svg>';
 // Ilustración de la portada: el lanzador del logo con el análisis de su mecánica
+function heroDeck(al) {
+  const withPh = (l) => l.filter((a) => a.photo);
+  const items = [...withPh(mlbOf(al)), ...withPh(firmasOf(al))].slice(0, 12);
+  if (items.length < 2) return '';
+  return `<div class="deck" data-cur="0" aria-roledescription="carrusel">
+    ${items.map((a, i) => `<a class="dk-card" href="#grandes-ligas" data-i="${i}" aria-hidden="${i ? 'true' : 'false'}" tabindex="${i ? -1 : 0}">
+      <img src="${esc(a.photo)}" alt="${esc(a.name)}" ${i > 2 ? 'loading="lazy"' : ''}>
+      <span class="dk-cap">${a.status === 'MLB' ? '<span class="badge-mlb">MLB</span>' : `<span class="badge-sig">${t('firmado')}</span>`}
+        <b>${esc(a.name)}</b><small>${esc(a.status === 'MLB' ? [a.debut_team, a.debut_year].filter(Boolean).join(' · ') : [a.signed_by, a.signed_year].filter(Boolean).join(' · '))}</small></span></a>`).join('')}
+    <div class="dk-dots" role="group">${items.map((a, i) => `<button type="button" class="${i ? '' : 'on'}" data-dk="${i}" aria-label="${t('verFoto')} ${i + 1}: ${esc(a.name)}"></button>`).join('')}</div>
+  </div>`;
+}
+function deckGo(d, n) {
+  const cards = d.querySelectorAll('.dk-card'), len = cards.length; n = ((n % len) + len) % len; d.dataset.cur = n;
+  cards.forEach((c, i) => { const o = (i - n + len) % len; c.className = 'dk-card p' + (o < 3 ? o : o === len - 1 ? 'x' : 'h'); c.setAttribute('aria-hidden', String(o !== 0)); c.tabIndex = o ? -1 : 0; });
+  d.querySelectorAll('.dk-dots button').forEach((b, i) => b.classList.toggle('on', i === n));
+}
 function mechArt() {
   return `<svg class="mech" viewBox="0 0 640 540" role="img" aria-label="${esc(t('heroH'))}">
     <defs><linearGradient id="bodyg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#8FAAE8"/></linearGradient></defs>
@@ -258,8 +275,7 @@ function vHome() {
       <div><span class="kick"><i></i>${t('kick')}</span><h1>${t('heroH')}</h1><p class="sub">${t('heroP')}</p>
         <div class="cta"><a class="btn btn-red" href="#peloteros">${t('verPel')}</a><a class="btn btn-glass" href="#academia">${t('nuestraHist')}</a></div></div>
       <div class="hud">
-        <div class="hud-top"><span>${t('hudT')}</span><b>${t('hudL')}</b></div>
-        ${s.hero_player ? `<img src="${esc(s.hero_player)}" alt="" style="max-height:480px;margin:0 auto">` : mechArt()}
+        ${(() => { const dk = heroDeck(al); return dk ? `<div class="hud-top"><span>${t('deckT')}</span><b>${t('deckL')}</b></div>${dk}` : `<div class="hud-top"><span>${t('hudT')}</span><b>${t('hudL')}</b></div>${s.hero_player ? `<img src="${esc(s.hero_player)}" alt="" style="max-height:480px;margin:0 auto">` : mechArt()}`; })()}
         <div class="hud-stats"><div><b>${mlb}</b><span>${t('hud1')}</span></div><div><b>80</b><span>${t('hud2')}</span></div><div><b>1998</b><span>${t('hud3')}</span></div></div>
       </div>
     </div>
@@ -484,6 +500,7 @@ async function render() {
 }
 document.addEventListener('click', (e) => {
   const f = e.target.closest('[data-filter]'); if (f) { ST.filter = f.dataset.filter; render(); return; }
+  const dd = e.target.closest('[data-dk]'); if (dd) { const d = dd.closest('.deck'); d.dataset.hold = String(Date.now() + 8000); deckGo(d, Number(dd.dataset.dk)); return; }
   const cb = e.target.closest('[data-car]'); if (cb) holdRail(cb.parentElement.querySelector('.rail'));
   if (cb) { const r = cb.parentElement.querySelector('.rail'), c = r.firstElementChild; r.scrollBy({ left: Number(cb.dataset.car) * ((c ? c.offsetWidth : 260) + 18) * (innerWidth > 700 ? 2 : 1), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
   const fl = e.target.closest('.flip'); if (fl) { const on = !fl.classList.contains('on'); fl.classList.toggle('on', on); fl.setAttribute('aria-pressed', String(on)); return; }
@@ -518,3 +535,15 @@ setInterval(() => {
     else r.scrollBy({ left: step, behavior: 'smooth' });
   });
 }, 3500);
+
+// ---------- portada: pila de fotos que rota ----------
+let dkX = null;
+document.addEventListener('pointerdown', (e) => { const d = e.target.closest && e.target.closest('.deck'); dkX = d ? [d, e.clientX] : null; if (d) d.dataset.hold = String(Date.now() + 8000); });
+document.addEventListener('pointerup', (e) => { if (!dkX) return; const [d, x] = dkX, dx = e.clientX - x; dkX = null; if (Math.abs(dx) > 40) { d.dataset.swiped = '1'; deckGo(d, Number(d.dataset.cur) + (dx < 0 ? 1 : -1)); } });
+document.addEventListener('click', (e) => { const d = e.target.closest && e.target.closest('.deck'); if (d && d.dataset.swiped) { d.dataset.swiped = ''; e.preventDefault(); e.stopPropagation(); } }, true);
+document.addEventListener('mouseover', (e) => { const d = e.target.closest && e.target.closest('.deck'); if (d) d.dataset.hold = String(Date.now() + 2500); });
+new MutationObserver(() => document.querySelectorAll('.deck:not([data-ready])').forEach((d) => { d.dataset.ready = '1'; deckGo(d, 0); })).observe(document.body, { childList: true, subtree: true });
+setInterval(() => {
+  if (document.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.deck').forEach((d) => { if (Number(d.dataset.hold || 0) > Date.now()) return; const b = d.getBoundingClientRect(); if (b.bottom < 0 || b.top > innerHeight) return; deckGo(d, Number(d.dataset.cur) + 1); });
+}, 3200);
