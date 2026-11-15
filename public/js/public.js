@@ -7,7 +7,7 @@ const T = {
     heroH: 'Donde se afinan los brazos que llegan a Grandes Ligas',
     heroP: 'Escuela de pitcheo de Fausto «Chiqui» Mejía en La Salvia, Bonao. Más de dos décadas corrigiendo mecánicas y desarrollando prospectos.',
     verPel: 'Ver peloteros', nuestraHist: 'Nuestra historia', salieron: 'Salieron de La Salvia:', kick: 'La Salvia, Bonao, República Dominicana',
-    hudT: 'Análisis de mecánica', hudL: 'Rapsodo', hud1: 'en Grandes Ligas', hud2: 'prospectos por temporada', hud3: 'formando lanzadores desde', sinFoto: 'Foto pronto', paso: 'Paso',
+    hudT: 'Análisis de mecánica', toca: 'Toca para ver su historia', volverT: 'Volver', firma: 'Firma', debutT: 'Debut', hoy: 'Hoy', sinHist: 'Pronto agregaremos su historia.', movH: 'Mapa de movimiento', movP: 'Cuánto se mueve cada lanzamiento, en pulgadas.', qh: 'Quiebre horizontal (pulg.)', qv: 'Quiebre vertical (pulg.)', hudL: 'Rapsodo', hud1: 'en Grandes Ligas', hud2: 'prospectos por temporada', hud3: 'formando lanzadores desde', sinFoto: 'Foto pronto', paso: 'Paso',
     mEje: 'Eje de equilibrio', mRod: 'Elevación de rodilla', mSal: 'Trayectoria', mZona: 'Zona de strike',
     mlbH: 'De La Salvia a Grandes Ligas', mlbP: 'Lanzadores y jugadores que se formaron en GO CHIQUI y llegaron a las Mayores.',
     enMLB: 'llegaron a Grandes Ligas', firmados: 'firmados con organizaciones', verLista: 'Ver la lista completa',
@@ -40,7 +40,7 @@ const T = {
     heroH: 'Where arms get tuned for the Big Leagues',
     heroP: 'The pitching school of Fausto «Chiqui» Mejía in La Salvia, Bonao. Over two decades fixing mechanics and developing prospects.',
     verPel: 'See players', nuestraHist: 'Our story', salieron: 'Came out of La Salvia:', kick: 'La Salvia, Bonao, Dominican Republic',
-    hudT: 'Mechanics analysis', hudL: 'Rapsodo', hud1: 'in the Big Leagues', hud2: 'prospects per season', hud3: 'developing pitchers since', sinFoto: 'Photo soon', paso: 'Step',
+    hudT: 'Mechanics analysis', toca: 'Tap to see his story', volverT: 'Back', firma: 'Signed', debutT: 'Debut', hoy: 'Now', sinHist: 'His story is coming soon.', movH: 'Movement map', movP: 'How much each pitch moves, in inches.', qh: 'Horizontal break (in.)', qv: 'Vertical break (in.)', hudL: 'Rapsodo', hud1: 'in the Big Leagues', hud2: 'prospects per season', hud3: 'developing pitchers since', sinFoto: 'Photo soon', paso: 'Step',
     mEje: 'Balance line', mRod: 'Knee lift', mSal: 'Pitch path', mZona: 'Strike zone',
     mlbH: 'From La Salvia to the Big Leagues', mlbP: 'Pitchers and players who trained at GO CHIQUI and reached the Majors.',
     enMLB: 'reached the Big Leagues', firmados: 'signed with organizations', verLista: 'See the full list',
@@ -177,13 +177,31 @@ function posShort(pos) {
 }
 function alumniCard(a) {
   const ps = posShort(a.position), pitcher = isPitcher(a.position) || /HP$/.test(ps) || !a.position;
-  return `<article class="pcard">
-    <div class="art">${a.photo ? `<img class="photo" src="${esc(a.photo)}" alt="${esc(a.name)}" loading="lazy">` : pitcher ? SIL() : BATS}</div>
-    <div class="tl">${a.debut_year ? esc(a.debut_year) : '—'}<small>${a.debut_year ? t('colDeb') : t('porConf')}</small></div>
-    <div class="tr">${a.status === 'MLB' ? '<span class="badge-mlb">MLB</span>' : `<span class="badge-sig">${t('firmado')}</span>`}</div>
-    <div class="bt"><h3>${esc(a.name)}</h3>
-      <div class="meta">${ps ? `<span class="chip-pos">${esc(ps)}</span>` : ''}<span>${esc(a.debut_team || a.signed_by || a.position || '')}</span></div></div>
-  </article>`;
+  const rows = [
+    [t('firma'), a.signed_by ? `${a.signed_by}${a.signed_year ? ' (' + a.signed_year + ')' : ''}` : ''],
+    [t('debutT'), a.debut_team ? `${a.debut_team}${a.debut_year ? ' (' + a.debut_year + ')' : ''}` : ''],
+    [t('hoy'), a.current_team || ''],
+  ].filter((r) => r[1]);
+  return `<button class="flip" type="button" aria-pressed="false" aria-label="${esc(a.name)}: ${esc(t('toca'))}">
+    <span class="flip-in">
+      <span class="pcard face front">
+        <span class="art">${a.photo ? `<img class="photo" src="${esc(a.photo)}" alt="" loading="lazy">` : pitcher ? SIL() : BATS}</span>
+        <span class="tl">${a.debut_year ? esc(a.debut_year) : '—'}<small>${a.debut_year ? t('colDeb') : t('porConf')}</small></span>
+        <span class="tr">${a.status === 'MLB' ? '<span class="badge-mlb">MLB</span>' : `<span class="badge-sig">${t('firmado')}</span>`}</span>
+        <span class="bt"><span class="h3">${esc(a.name)}</span>
+          <span class="meta">${ps ? `<span class="chip-pos">${esc(ps)}</span>` : ''}<span>${esc(a.debut_team || a.signed_by || a.position || '')}</span></span>
+          <span class="hint">${t('toca')}</span></span>
+      </span>
+      <span class="pcard face back">
+        <span class="b-head">${ps ? `<span class="chip-pos">${esc(ps)}</span>` : ''}${a.status === 'MLB' ? '<span class="badge-mlb">MLB</span>' : `<span class="badge-sig">${t('firmado')}</span>`}</span>
+        <span class="h3">${esc(a.name)}</span>
+        <span class="b-pos">${esc(a.position || '')}</span>
+        ${rows.length ? `<span class="b-rows">${rows.map(([l, v]) => `<span><small>${esc(l)}</small><b>${esc(v)}</b></span>`).join('')}</span>` : ''}
+        <span class="b-bio">${a.bio ? esc(a.bio) : `<em>${t('sinHist')}</em>`}</span>
+        <span class="hint">${t('volverT')}</span>
+      </span>
+    </span>
+  </button>`;
 }
 function alumniGrid(list) { return `<div class="cards">${list.map(alumniCard).join('')}</div>`; }
 function counts() {
@@ -308,6 +326,27 @@ function pitchTypeTable(e) {
     ${(e.pitches || []).map((r, i) => `<tr>${cols.map(([k]) => k === 'type' ? `<td><span class="ptype"><i style="background:${PCOL[i % PCOL.length]}"></i>${esc(r.type || '—')}</span></td>`
       : `<td>${r[k] == null || r[k] === '' ? '—' : k === 'spin' ? Math.round(r[k]).toLocaleString('en-US') : /spinEff|strike/.test(k) ? num(r[k]) + '%' : esc(r[k])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
+function movementChart(e) {
+  const pts = (e.pitches || []).map((r, i) => ({ k: r.type || '—', x: Number(r.hb), y: Number(r.vb), c: PCOL[i % PCOL.length] }))
+    .filter((p) => r_ok(p.x) && r_ok(p.y));
+  function r_ok(v) { return v !== null && !isNaN(v) && isFinite(v); }
+  if (!pts.length) return '';
+  const R = Math.max(20, Math.ceil(Math.max(...pts.map((p) => Math.max(Math.abs(p.x), Math.abs(p.y)))) / 5) * 5 + 5);
+  const S = 360, C = S / 2, k = (C - 26) / R, X = (v) => C + v * k, Y = (v) => C - v * k;
+  let g = '';
+  for (let v = -R; v <= R; v += 5) {
+    if (v === 0) continue;
+    g += `<line class="mv-g" x1="${X(v)}" y1="${Y(-R)}" x2="${X(v)}" y2="${Y(R)}"/><line class="mv-g" x1="${X(-R)}" y1="${Y(v)}" x2="${X(R)}" y2="${Y(v)}"/>`;
+    if (v % 10 === 0) g += `<text class="mv-t" x="${X(v)}" y="${C + 14}" text-anchor="middle">${v}</text><text class="mv-t" x="${C - 6}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`;
+  }
+  [10, 20].filter((r) => r <= R).forEach((r) => { g += `<circle class="mv-r" cx="${C}" cy="${C}" r="${r * k}"/>`; });
+  g += `<line class="mv-a" x1="${X(-R)}" y1="${C}" x2="${X(R)}" y2="${C}"/><line class="mv-a" x1="${C}" y1="${Y(-R)}" x2="${C}" y2="${Y(R)}"/>`;
+  pts.forEach((p) => { g += `<g class="mv-p"><circle cx="${X(p.x)}" cy="${Y(p.y)}" r="16" fill="${p.c}" opacity=".18"/><circle cx="${X(p.x)}" cy="${Y(p.y)}" r="8" fill="${p.c}" stroke="#04060D" stroke-width="2"/><title>${esc(p.k)}: ${num(p.x)} / ${num(p.y)}</title></g>`; });
+  return `<div class="box mv-box"><h3>${t('movH')}</h3><p class="mv-sub">${t('movP')}</p>
+    <div class="mv-wrap"><figure class="mv-fig"><svg class="mv" viewBox="0 0 ${S} ${S}" role="img" aria-label="${esc(t('movH'))}">${g}</svg>
+      <figcaption class="mv-x">${t('qh')} →</figcaption><span class="mv-y">↑ ${t('qv')}</span></figure>
+      <div class="legend">${pts.map((p) => `<div><i style="background:${p.c}"></i>${esc(p.k)}<span>${num(p.x)}″ / ${num(p.y)}″</span></div>`).join('')}</div></div></div>`;
+}
 function freqPanel(e) {
   const rows = (e.pitches || []).filter((r) => r.type);
   const hasCount = rows.some((r) => Number(r.count) > 0);
@@ -352,7 +391,7 @@ async function vPlayer(id) {
   let body = '';
   switch (ST.ptab) {
     case 'resumen':
-      body = last || lastHit ? tiles + (last ? `<div class="two"><div class="box"><h3>${t('pitchTypes')}</h3>${pitchTypeTable(last)}</div><div class="box"><h3>${t('freq')}</h3>${freqPanel(last)}</div></div>` : '') + hitTiles : noEval; break;
+      body = last || lastHit ? tiles + (last ? `<div class="two"><div class="box"><h3>${t('pitchTypes')}</h3>${pitchTypeTable(last)}</div><div class="box"><h3>${t('freq')}</h3>${freqPanel(last)}</div></div>${movementChart(last)}` : '') + hitTiles : noEval; break;
     case 'evals':
       body = pitch.length ? `<div class="box scroll-x"><table class="tbl"><thead><tr><th>${t('fecha')}</th><th>Rapsodo</th><th class="num">${t('veloAvg')}</th><th class="num">${t('veloMax')}</th><th class="num">RPM</th><th class="num">Spin eff.</th></tr></thead><tbody>
         ${pitch.slice().reverse().map((e, i, arr) => { const a = evalSummary(e), prev = arr[i + 1] ? evalSummary(arr[i + 1]) : null;
@@ -420,6 +459,7 @@ async function render() {
 }
 document.addEventListener('click', (e) => {
   const f = e.target.closest('[data-filter]'); if (f) { ST.filter = f.dataset.filter; render(); return; }
+  const fl = e.target.closest('.flip'); if (fl) { const on = !fl.classList.contains('on'); fl.classList.toggle('on', on); fl.setAttribute('aria-pressed', String(on)); return; }
   const pt = e.target.closest('[data-ptab]'); if (pt) { ST.ptab = pt.dataset.ptab; render(); return; }
   const pl = e.target.closest('[data-play]'); if (pl) { playVideo(pl.dataset.play); return; }
   if (e.target.closest('[data-act=report]') && ST.player) { printReport(ST.player.player, ST.player.evaluations); return; }
