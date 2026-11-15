@@ -233,8 +233,8 @@ function signCard(a) {
 function firmasSec(list, more) {
   if (!list.length) return '';
   return `<section class="sec" id="firmas"><div class="wrap">
-    <div class="sec-h"><div><h2>${t('firmasH')}</h2><p>${t('firmasP')}</p></div>${more ? `<a class="btn btn-glass" href="#grandes-ligas">${t('verFirmas')}</a>` : ''}</div>
-    ${carousel(list.map(signCard).join(''), 'sm')}</div></section>`;
+    <div class="sec-h"><div><h2>${t('firmasH')}</h2><p>${t('firmasP')}</p></div></div>
+    ${carousel(list.map(signCard).join(''), 'sm')}${more ? `<p style="margin-top:26px"><a class="link" href="#grandes-ligas">${t('verFirmas')} →</a></p>` : ''}</div></section>`;
 }
 function carousel(items, cls = '') {
   return `<div class="carousel">
@@ -413,7 +413,7 @@ function printReport(p, ev) {
 }
 async function vPlayer(id) {
   if (!ST.player || ST.player.player.id !== id) {
-    try { ST.player = await api('public/players/' + encodeURIComponent(id)); ST.ptab = 'resumen'; ST.cmp = [null, null]; }
+    try { if (!id) throw 0; ST.player = await api('public/players/' + encodeURIComponent(id)); if (!ST.player || !ST.player.player) throw 0; ST.ptab = 'resumen'; ST.cmp = [null, null]; }
     catch { return `<div class="wrap" style="padding:80px 28px"><div class="empty-n"><p>${t('noEnc')}</p><a class="btn btn-blue" style="margin-top:16px" href="#peloteros">${t('volver')}</a></div></div>`; }
   }
   const { player: p, evaluations: ev, media } = ST.player;
