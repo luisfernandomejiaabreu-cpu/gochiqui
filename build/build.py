@@ -20,11 +20,16 @@ mig2 = [
   ["INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", ['email', tx['email']]],
   ["INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", ['maps_url', tx['maps_url']]],
 ]
+mig3 = [
+  ["UPDATE alumni SET position=?, debut_year=?, debut_team=?, needs_review=0, bio=COALESCE(bio, ?) WHERE id='al-lgarcia' AND needs_review=1",
+   ['Lanzador derecho (RP)', 2013, 'Philadelphia Phillies',
+    'Luis Amado García, «Amadito» o «Compa G». Nació el 30 de enero de 1987 en Santo Domingo. Lanzador relevista derecho de 6\'2" y 240 lb. Debutó en Grandes Ligas el 10 de julio de 2013 con los Philadelphia Phillies, con una entrada en blanco frente a los Washington Nationals.']],
+]
 tail = '''
 // ---------- base de datos: se crea sola y se actualiza ----------
 const SCHEMA = %s;
 const SEED = %s;
-const MIGRATIONS = [{ id: 'bio_v1', steps: %s }, { id: 'contacto_v1', steps: %s }];
+const MIGRATIONS = [{ id: 'bio_v1', steps: %s }, { id: 'contacto_v1', steps: %s }, { id: 'lgarcia_v1', steps: %s }];
 let dbReady = false;
 async function ensureDb(env) {
   if (dbReady) return;
@@ -46,7 +51,7 @@ export async function onRequest(context) {
   try { await ensureDb(env); } catch (e) { return err('No se pudo preparar la base de datos: ' + e.message, 500); }
   return handle(context);
 }
-''' % (json.dumps(S, ensure_ascii=False, indent=1), json.dumps(D, ensure_ascii=False, indent=1), json.dumps(mig, ensure_ascii=False, indent=1), json.dumps(mig2, ensure_ascii=False, indent=1))
+''' % (json.dumps(S, ensure_ascii=False, indent=1), json.dumps(D, ensure_ascii=False, indent=1), json.dumps(mig, ensure_ascii=False, indent=1), json.dumps(mig2, ensure_ascii=False, indent=1), json.dumps(mig3, ensure_ascii=False, indent=1))
 import os as _os
 _os.makedirs(R + '/functions/api', exist_ok=True)
 open(R + '/functions/api/[[path]].js', 'w').write(api + tail)
