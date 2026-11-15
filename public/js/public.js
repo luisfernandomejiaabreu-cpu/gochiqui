@@ -280,12 +280,12 @@ function vHome() {
       </div>
     </div>
   </section>
+  ${firmasSec(firmasOf(al).slice(0, 12), true)}
   <section class="sec band"><div class="wrap">
     <div class="sec-h"><div><h2>${t('mlbH')}</h2><p>${t('mlbP')}</p></div>${counts()}</div>
-    ${alumniGrid(mlbOf(al).slice(0, 8))}
+    ${alumniGrid(mlbOf(al))}
     <p style="margin-top:26px"><a class="link" href="#grandes-ligas">${t('verLista')} →</a></p>
   </div></section>
-  ${firmasSec(firmasOf(al).slice(0, 12), true)}
   <section class="sec"><div class="wrap">
     <div class="sec-h"><div><h2>${t('metH')}</h2><p>${t('metP')}</p></div></div>
     <ol class="steps">${[1, 2, 3, 4].map((n) => `<li class="step"><i>${t('paso')} ${n}</i><h3>${t('m' + n + 'h')}</h3><p>${t('m' + n + 'p')}</p></li>`).join('')}</ol>
