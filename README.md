@@ -11,10 +11,11 @@ Se publica solo en **Cloudflare Pages** cada vez que hay un cambio en la rama `m
 - Secretos: `ADMIN_PASSWORD`, `SESSION_SECRET` (y opcional `ANTHROPIC_API_KEY` para leer PDF de Rapsodo)
 
 ## Estructura
-- `public/` — el sitio (`index.html`), el panel (`admin.html`), estilos, scripts e imágenes. `public/_worker.js` es la API.
+- `public/` — el sitio (`index.html`), el panel (`admin.html`), estilos, scripts e imágenes.
+- `functions/api/[[path]].js` — la API (Cloudflare Pages Functions), generada.
 - `src/api.js` — código fuente de la API.
 - `schema.sql`, `seed.sql`, `build/textos.json` — base de datos y textos iniciales.
-- `build/build.py` — genera `public/_worker.js` (`python3 build/build.py`).
+- `build/build.py` — genera `functions/api/[[path]].js` (`python3 build/build.py`).
 
 La base de datos se crea y se actualiza sola la primera vez que se abre la web.
 

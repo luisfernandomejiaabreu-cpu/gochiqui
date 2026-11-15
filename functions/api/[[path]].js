@@ -1,4 +1,4 @@
-// GO CHIQUI · _worker.js (Cloudflare Pages, modo avanzado). Generado por build/build.py
+// GO CHIQUI · API (Cloudflare Pages Functions). Generado por build/build.py desde src/api.js
 // Bindings: DB (D1), MEDIA (R2). Secrets: ADMIN_PASSWORD, SESSION_SECRET, ANTHROPIC_API_KEY (opcional)
 
 const json = (data, status = 200, headers = {}) =>
@@ -103,7 +103,7 @@ async function extractRapsodo(env, pdfKey) {
 }
 
 // ---------- router ----------
-async function onRequest({ request, env, params }) {
+async function handle({ request, env, params }) {
   const url = new URL(request.url);
   const parts = (params.path || []).map(decodeURIComponent);
   const [a0, a1, a2] = parts;
@@ -492,16 +492,10 @@ async function ensureDb(env) {
   dbReady = true;
 }
 
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    if (url.pathname.startsWith('/api/')) {
-      if (!env.DB) return err('Falta conectar la base de datos (binding DB). Revisa Configuración > Vinculaciones.', 500);
-      if (!env.MEDIA) return err('Falta conectar el almacenamiento R2 (binding MEDIA). Revisa Configuración > Vinculaciones.', 500);
-      try { await ensureDb(env); } catch (e) { return err('No se pudo preparar la base de datos: ' + e.message, 500); }
-      const path = url.pathname.slice(5).split('/').filter(Boolean);
-      return onRequest({ request, env, params: { path } });
-    }
-    return env.ASSETS.fetch(request);
-  },
-};
+export async function onRequest(context) {
+  const { env } = context;
+  if (!env.DB) return err('Falta conectar la base de datos (binding DB). Revisa Configuración > Vinculaciones.', 500);
+  if (!env.MEDIA) return err('Falta conectar el almacenamiento R2 (binding MEDIA). Revisa Configuración > Vinculaciones.', 500);
+  try { await ensureDb(env); } catch (e) { return err('No se pudo preparar la base de datos: ' + e.message, 500); }
+  return handle(context);
+}

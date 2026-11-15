@@ -2,7 +2,7 @@
 import json, os
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 api = open(R + '/src/api.js').read()
-api = api.replace('export async function onRequest(', 'async function onRequest(').replace('// GO CHIQUI · API (Cloudflare Pages Functions)', '// GO CHIQUI · _worker.js (Cloudflare Pages, modo avanzado). Generado por build/build.py')
+api = api.replace('export async function onRequest(', 'async function handle(').replace('// GO CHIQUI · API (Cloudflare Pages Functions)', '// GO CHIQUI · API (Cloudflare Pages Functions). Generado por build/build.py desde src/api.js')
 def stmts(sql):
     sql = '\n'.join(l for l in sql.splitlines() if not l.strip().startswith('--'))
     return [x.strip() for x in sql.split(';') if x.strip()]
@@ -39,19 +39,16 @@ async function ensureDb(env) {
   dbReady = true;
 }
 
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    if (url.pathname.startsWith('/api/')) {
-      if (!env.DB) return err('Falta conectar la base de datos (binding DB). Revisa Configuración > Vinculaciones.', 500);
-      if (!env.MEDIA) return err('Falta conectar el almacenamiento R2 (binding MEDIA). Revisa Configuración > Vinculaciones.', 500);
-      try { await ensureDb(env); } catch (e) { return err('No se pudo preparar la base de datos: ' + e.message, 500); }
-      const path = url.pathname.slice(5).split('/').filter(Boolean);
-      return onRequest({ request, env, params: { path } });
-    }
-    return env.ASSETS.fetch(request);
-  },
-};
+export async function onRequest(context) {
+  const { env } = context;
+  if (!env.DB) return err('Falta conectar la base de datos (binding DB). Revisa Configuración > Vinculaciones.', 500);
+  if (!env.MEDIA) return err('Falta conectar el almacenamiento R2 (binding MEDIA). Revisa Configuración > Vinculaciones.', 500);
+  try { await ensureDb(env); } catch (e) { return err('No se pudo preparar la base de datos: ' + e.message, 500); }
+  return handle(context);
+}
 ''' % (json.dumps(S, ensure_ascii=False, indent=1), json.dumps(D, ensure_ascii=False, indent=1), json.dumps(mig, ensure_ascii=False, indent=1), json.dumps(mig2, ensure_ascii=False, indent=1))
-open(R + '/public/_worker.js', 'w').write(api + tail)
+import os as _os
+_os.makedirs(R + '/functions/api', exist_ok=True)
+open(R + '/functions/api/[[path]].js', 'w').write(api + tail)
+if _os.path.exists(R + '/public/_worker.js'): _os.remove(R + '/public/_worker.js')
 print('ok')
