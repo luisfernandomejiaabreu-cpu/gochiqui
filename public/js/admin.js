@@ -410,7 +410,7 @@ const settingFields = [
 function vSettings() {
   const s = A.settings;
   return shell('Configuración', 'Textos, contacto e imagen de la academia.', `<div class="card panel"><div class="ph-row"><h3>Datos del sitio</h3><button class="btn btn-red btn-sm" data-act="edit-settings">Editar</button></div>
-    <table class="tbl"><tbody>${settingFields.map((f) => `<tr><td class="muted" style="width:260px">${esc(f.label)}</td><td>${f.type === 'photo' ? (s[f.k] ? `<img src="${esc(s[f.k])}" style="height:48px;border-radius:6px">` : '<span class="dim">Sin imagen</span>') : esc(String(s[f.k] || '—').slice(0, 160)) + (String(s[f.k] || '').length > 160 ? '…' : '')}</td></tr>`).join('')}</tbody></table></div>
+    <table class="tbl"><tbody>${settingFields.map((f) => `<tr><td class="muted" style="width:260px">${esc(f.label)}</td><td>${f.type === 'photo' ? (s[f.k] ? `<span style="display:inline-flex;align-items:center;gap:12px"><img src="${esc(s[f.k])}" style="height:48px;border-radius:6px"><button class="btn btn-dark btn-sm" data-act="clear-setting" data-k="${f.k}_key">Quitar</button></span>` : '<span class="dim">Sin imagen</span>') : esc(String(s[f.k] || '—').slice(0, 160)) + (String(s[f.k] || '').length > 160 ? '…' : '')}</td></tr>`).join('')}</tbody></table></div>
     <div class="card panel"><h3>Seguridad</h3><p class="muted">La contraseña del panel se cambia en Cloudflare (secreto ADMIN_PASSWORD). La lectura automática de Rapsodo está <b style="color:#fff">${A.ai ? 'activa' : 'apagada'}</b>.</p></div>`);
 }
 async function editSettings() {
@@ -505,6 +505,7 @@ document.addEventListener('click', async (e) => {
     case 'toggle-media': { const m = find(A.media); await api('admin/media/' + id, { method: 'PUT', body: { ...m, published: !m.published } }); refresh(); return; }
     case 'del-media': if (await confirmBox('¿Eliminar este archivo?')) { await api('admin/media/' + id, { method: 'DELETE' }); refresh(); } return;
     case 'edit-settings': return editSettings();
+    case 'clear-setting': if (await confirmBox('¿Quitar esta imagen? En la web volverá a salir lo que había antes.', { ok: 'Quitar' })) { await api('admin/settings', { method: 'PUT', body: { [el.dataset.k]: '' } }); toast('Imagen quitada'); refresh(); } return;
   }
 });
 // Edición en vivo del formulario de Rapsodo (sin re-dibujar mientras escribes)

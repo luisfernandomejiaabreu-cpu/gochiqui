@@ -35,11 +35,12 @@ mig5 = [
    ['Receptor (C)', 2016, 'St. Louis Cardinals', 2005, 'Los Angeles Angels',
     'Alberto Rosario nació el 10 de enero de 1987 en Bonao. Receptor que batea y lanza a la derecha, 6\'0" y 190 lb. Firmó en 2005 con los Angels y tras 11 temporadas en ligas menores debutó en Grandes Ligas el 9 de julio de 2016 con los St. Louis Cardinals ante los Brewers, con un sencillo y una carrera impulsada en su primer turno. Jugó con St. Louis en 2016 y 2017.']],
 ]
+mig6 = [["UPDATE settings SET value='' WHERE key IN ('hero_player_key', 'hero_key')", []]]
 tail = '''
 // ---------- base de datos: se crea sola y se actualiza ----------
 const SCHEMA = %s;
 const SEED = %s;
-const MIGRATIONS = [{ id: 'bio_v1', steps: %s }, { id: 'contacto_v1', steps: %s }, { id: 'lgarcia_v1', steps: %s }, { id: 'lsantos_v1', steps: %s }, { id: 'arosario_v1', steps: %s }];
+const MIGRATIONS = [{ id: 'bio_v1', steps: %s }, { id: 'contacto_v1', steps: %s }, { id: 'lgarcia_v1', steps: %s }, { id: 'lsantos_v1', steps: %s }, { id: 'arosario_v1', steps: %s }, { id: 'hero_reset_v1', steps: %s }];
 let dbReady = false;
 async function ensureDb(env) {
   if (dbReady) return;
@@ -61,7 +62,7 @@ export async function onRequest(context) {
   try { await ensureDb(env); } catch (e) { return err('No se pudo preparar la base de datos: ' + e.message, 500); }
   return handle(context);
 }
-''' % (json.dumps(S, ensure_ascii=False, indent=1), json.dumps(D, ensure_ascii=False, indent=1), json.dumps(mig, ensure_ascii=False, indent=1), json.dumps(mig2, ensure_ascii=False, indent=1), json.dumps(mig3, ensure_ascii=False, indent=1), json.dumps(mig4, ensure_ascii=False, indent=1), json.dumps(mig5, ensure_ascii=False, indent=1))
+''' % (json.dumps(S, ensure_ascii=False, indent=1), json.dumps(D, ensure_ascii=False, indent=1), json.dumps(mig, ensure_ascii=False, indent=1), json.dumps(mig2, ensure_ascii=False, indent=1), json.dumps(mig3, ensure_ascii=False, indent=1), json.dumps(mig4, ensure_ascii=False, indent=1), json.dumps(mig5, ensure_ascii=False, indent=1), json.dumps(mig6, ensure_ascii=False, indent=1))
 import os as _os
 _os.makedirs(R + '/functions/api', exist_ok=True)
 open(R + '/functions/api/[[path]].js', 'w').write(api + tail)
