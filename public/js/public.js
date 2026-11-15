@@ -240,7 +240,7 @@ function vHome() {
 }
 function founderArt() {
   const s = ST.site;
-  return `<figure class="f-art ${s.founder_photo ? 'photo-on' : ''}">${s.founder_photo ? `<img class="photo" src="${esc(s.founder_photo)}" alt="${esc(s.founder_name)}">` : `<img src="${esc(LOGO())}" alt="">`}
+  return `<figure class="f-art photo-on">${s.founder_photo ? `<img class="photo" src="${esc(s.founder_photo)}" alt="${esc(s.founder_name)}">` : `<img class="cut" src="/img/chiqui.png" alt="${esc(s.founder_name)}">`}
     <figcaption><b>${esc(s.founder_name)}</b><span>${esc(S_('founder_role'))}</span></figcaption></figure>`;
 }
 function vPlayers() {
