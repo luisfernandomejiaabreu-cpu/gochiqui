@@ -81,3 +81,52 @@
 .gal-a img,.gal-a video{width:100%;aspect-ratio:4/3;object-fit:cover}
 .gal-a figcaption{padding:8px 10px;font-size:13px;display:flex;justify-content:space-between;gap:6px;align-items:center}
 .photo-in{display:flex;align-items:center;gap:12px}
+
+/* ===== Tema futurista (igual que la web pública) ===== */
+:root{--head:'Chakra Petch',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+  --bg:#04060D;--bg2:#080E1F;--panel:#0A1330;--panel2:#0F1B40;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.15);
+  --red:#FF2E4C;--cyan:#59C2FF;--blue:#2E6BFF;--text:#E8EEFF;--muted:#93A3C8;--dim:#6B7AA0}
+body{background:
+  radial-gradient(900px 600px at 90% -10%,rgba(46,107,255,.18),transparent 60%),
+  radial-gradient(700px 500px at -10% 40%,rgba(255,46,76,.10),transparent 60%),
+  linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px) 0 0/64px 64px,
+  linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px) 0 0/64px 64px,#04060D;background-attachment:fixed}
+h1,h2,h3,h4{font-family:var(--head);font-weight:700;font-style:normal}
+.wordmark{font-family:var(--head);font-style:normal;font-weight:700;letter-spacing:.06em;font-size:21px}
+.wordmark span{color:#fff}
+.wordmark small{letter-spacing:.3em;font-size:9px;color:var(--muted)}
+.side{background:rgba(6,10,24,.75);backdrop-filter:blur(14px);border-right:1px solid var(--line)}
+.menu a{font-family:var(--head);font-size:15px;letter-spacing:.02em}
+.menu a.on{background:linear-gradient(135deg,#FF4762,#D9112F);box-shadow:0 8px 22px -8px rgba(255,46,76,.8)}
+.bar{background:rgba(4,6,13,.7);backdrop-filter:blur(14px)}
+.card,.panel{background:rgba(255,255,255,.04)!important;border:1px solid var(--line)!important;border-radius:18px}
+.tile{background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.tile .v{font-family:var(--head);font-style:normal}
+.tile.hot{background:linear-gradient(135deg,#FF4762,#C70E2B);border-color:transparent}
+.kpi{border-radius:18px;backdrop-filter:blur(6px)}
+.kpi b{font-family:var(--head)}
+.k-blue{background:linear-gradient(135deg,rgba(46,107,255,.55),rgba(46,107,255,.12));border-color:rgba(89,194,255,.45)}
+.k-red{background:linear-gradient(135deg,rgba(255,46,76,.6),rgba(255,46,76,.12));border-color:rgba(255,46,76,.55)}
+.k-green{background:linear-gradient(135deg,rgba(52,211,153,.45),rgba(52,211,153,.08));border-color:rgba(52,211,153,.5)}
+.k-violet{background:linear-gradient(135deg,rgba(167,139,250,.5),rgba(167,139,250,.1));border-color:rgba(167,139,250,.5)}
+.btn{font-family:var(--head);border-radius:10px}
+.btn-red{background:linear-gradient(135deg,#FF4762,#D9112F)}
+.btn-dark{background:rgba(255,255,255,.06);border-color:var(--line2)}
+.btn-dark:hover{border-color:var(--cyan)}
+.in{background:rgba(4,6,13,.6);border-color:var(--line2);border-radius:10px}
+.in:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(89,194,255,.18)}
+.tbl th{font-family:var(--head)}
+.modal{background:#0A1330;border-color:var(--line2);border-radius:20px}
+.rap-badge{background:rgba(255,255,255,.04);border-color:var(--line)}
+.rap-badge b{font-family:var(--head)}
+.chart .grid-l{stroke:rgba(255,255,255,.07)}
+.chart .ln{stroke:var(--red);filter:drop-shadow(0 0 6px rgba(255,46,76,.7))}
+.chart .dot{fill:#04060D}
+.login{background:radial-gradient(ellipse at 50% 0,rgba(46,107,255,.3),#04060D 60%)}
+.login .card{border-radius:24px}
+.login h1{font-style:normal}
+.photo-btn{position:relative;overflow:hidden}
+.photo-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.al-thumb{width:46px;height:58px;border-radius:8px;object-fit:cover;background:var(--panel2);display:flex;align-items:center;justify-content:center;font:700 12px var(--head);color:var(--muted);border:1px solid var(--line2)}
+.actions{flex-wrap:nowrap}
+.al-thumb{text-align:center;line-height:1.2;font-size:10.5px}

@@ -6,7 +6,8 @@ const T = {
     tagline: 'Academia de béisbol, Bonao',
     heroH: 'Donde se afinan los brazos que llegan a Grandes Ligas',
     heroP: 'Escuela de pitcheo de Fausto «Chiqui» Mejía en La Salvia, Bonao. Más de dos décadas corrigiendo mecánicas y desarrollando prospectos.',
-    verPel: 'Ver peloteros', nuestraHist: 'Nuestra historia', salieron: 'Salieron de La Salvia:',
+    verPel: 'Ver peloteros', nuestraHist: 'Nuestra historia', salieron: 'Salieron de La Salvia:', kick: 'La Salvia, Bonao, República Dominicana',
+    hudT: 'Análisis de mecánica', hudL: 'Rapsodo', hud1: 'en Grandes Ligas', hud2: 'prospectos por temporada', hud3: 'formando lanzadores desde', sinFoto: 'Foto pronto', paso: 'Paso',
     mEje: 'Eje de equilibrio', mRod: 'Elevación de rodilla', mSal: 'Trayectoria', mZona: 'Zona de strike',
     mlbH: 'De La Salvia a Grandes Ligas', mlbP: 'Lanzadores y jugadores que se formaron en GO CHIQUI y llegaron a las Mayores.',
     enMLB: 'llegaron a Grandes Ligas', firmados: 'firmados con organizaciones', verLista: 'Ver la lista completa',
@@ -38,7 +39,8 @@ const T = {
     tagline: 'Baseball academy, Bonao',
     heroH: 'Where arms get tuned for the Big Leagues',
     heroP: 'The pitching school of Fausto «Chiqui» Mejía in La Salvia, Bonao. Over two decades fixing mechanics and developing prospects.',
-    verPel: 'See players', nuestraHist: 'Our story', salieron: 'Came out of La Salvia:',
+    verPel: 'See players', nuestraHist: 'Our story', salieron: 'Came out of La Salvia:', kick: 'La Salvia, Bonao, Dominican Republic',
+    hudT: 'Mechanics analysis', hudL: 'Rapsodo', hud1: 'in the Big Leagues', hud2: 'prospects per season', hud3: 'developing pitchers since', sinFoto: 'Photo soon', paso: 'Step',
     mEje: 'Balance line', mRod: 'Knee lift', mSal: 'Pitch path', mZona: 'Strike zone',
     mlbH: 'From La Salvia to the Big Leagues', mlbP: 'Pitchers and players who trained at GO CHIQUI and reached the Majors.',
     enMLB: 'reached the Big Leagues', firmados: 'signed with organizations', verLista: 'See the full list',
@@ -77,7 +79,7 @@ const isPitcher = (pos) => /lanz|pitch|rhp|lhp|^p$/i.test(pos || '');
 const posAbbr = (pos) => ((pos || '').match(/\(([^)]+)\)/) || [])[1] || '';
 const posName = (pos) => (pos || '').replace(/\s*\([^)]*\)/, '');
 const LOGO = () => ST.site.logo || '/img/logo.png';
-const PCOL = ['#CE1126', '#0B2A5B', '#E8A317', '#3E7CC9', '#1F9D5C', '#8B5CF6', '#64748B'];
+const PCOL = ['#FF2E4C', '#2E6BFF', '#FFB020', '#59C2FF', '#34D399', '#A78BFA', '#94A3B8'];
 
 const IC = {
   ig: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>',
@@ -91,11 +93,15 @@ const IC = {
 };
 const FLAG_SM = '<svg viewBox="0 0 30 20"><rect width="15" height="10" fill="#002d62"/><rect x="15" width="15" height="10" fill="#ce1126"/><rect y="10" width="15" height="10" fill="#ce1126"/><rect x="15" y="10" width="15" height="10" fill="#002d62"/><rect x="13" width="4" height="20" fill="#fff"/><rect y="8" width="30" height="4" fill="#fff"/></svg>';
 
+const SIL = (cls = 'sil') => `<svg class="${cls}" viewBox="0 0 180 259" aria-hidden="true"><defs><linearGradient id="silg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#9FB8F0"/></linearGradient></defs><g transform="translate(180 0) scale(-1 1)"><path d="${PITCHER_PATH}" fill="url(#silg)"/></g></svg>`;
+const BATS = '<svg class="sil bats" viewBox="0 0 120 120" aria-hidden="true"><g fill="#E8EEFF"><path d="M18 8l9-6 70 92-4 10-9-2z"/><path d="M102 8l-9-6-70 92 4 10 9-2z"/></g><circle cx="60" cy="86" r="17" fill="#fff"/><path d="M50 73c5 7 5 19 0 26M70 73c-5 7-5 19 0 26" fill="none" stroke="#FF2E4C" stroke-width="2.4" stroke-dasharray="2.4 2.4"/></svg>';
 // Ilustración de la portada: el lanzador del logo con el análisis de su mecánica
 function mechArt() {
   return `<svg class="mech" viewBox="0 0 640 540" role="img" aria-label="${esc(t('heroH'))}">
+    <defs><linearGradient id="bodyg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#8FAAE8"/></linearGradient></defs>
+    <g class="floor">${[0, 1, 2, 3, 4, 5].map((i) => `<line x1="${320 - 60 * (i + 1) * 1.6}" y1="540" x2="${320 - 18 * (i + 1)}" y2="470"/><line x1="${320 + 60 * (i + 1) * 1.6}" y1="540" x2="${320 + 18 * (i + 1)}" y2="470"/>`).join('')}<line x1="0" y1="490" x2="640" y2="490"/><line x1="0" y1="512" x2="640" y2="512"/></g>
     <line class="ln draw" style="--d:.2s" x1="243" y1="34" x2="243" y2="505"/>
-    <g transform="translate(130 40) scale(1.75) translate(180 0) scale(-1 1)"><path d="${PITCHER_PATH}" fill="#fff"/></g>
+    <g class="body" transform="translate(130 40) scale(1.75) translate(180 0) scale(-1 1)"><path d="${PITCHER_PATH}" fill="url(#bodyg)"/></g>
     <path class="arc draw" style="--d:.5s" d="M340.8,222.7 A46,46 0 0,0 392,252.3"/>
     <g class="zone pop" style="--d:1.5s"><rect x="548" y="150" width="72" height="100" rx="2"/>
       <line x1="572" y1="150" x2="572" y2="250"/><line x1="596" y1="150" x2="596" y2="250"/><line x1="548" y1="183.3" x2="620" y2="183.3"/><line x1="548" y1="216.7" x2="620" y2="216.7"/></g>
@@ -159,16 +165,27 @@ function donut(parts, label, size = 168) {
   return `<svg viewBox="0 0 160 160" width="${size}" height="${size}" aria-hidden="true"><circle r="${R}" cx="80" cy="80" fill="none" stroke="#EEF2F8" stroke-width="20"/>${segs.join('')}
     <text class="donut-t" x="80" y="84" text-anchor="middle">${parts.reduce((s, p) => s + p.n, 0)}</text><text class="donut-s" x="80" y="102" text-anchor="middle">${esc(label)}</text></svg>`;
 }
-function rosterRows(list) {
-  return `<div class="roster" role="table"><div class="r-head" role="row"><span>${t('colDeb')}</span><span>${t('colNom')}</span><span>${t('colPos')}</span><span>${t('colEq')}</span><span></span></div>
-    ${list.map((a) => `<div class="r-row" role="row">
-      <span class="r-yr ${a.debut_year ? '' : 'na'}">${a.debut_year ? esc(a.debut_year) : '—'}</span>
-      <span class="r-name">${a.photo ? avatar(a.name, a.photo, 46) : ''}<b>${esc(a.name)}</b></span>
-      <span class="r-pos">${esc(a.position || t('porConf'))}</span>
-      <span class="r-team">${a.debut_team ? esc(a.debut_team) : a.signed_by ? esc(a.signed_by) : '<span>' + t('porConf') + '</span>'}${a.current_team ? `<span>${t('equipoAct')}: ${esc(a.current_team)}</span>` : ''}</span>
-      <span class="r-st">${a.status === 'MLB' ? '<span class="pill mlb">MLB</span>' : `<span class="pill sig">${t('firmado')}</span>`}</span>
-    </div>`).join('')}</div>`;
+function posShort(pos) {
+  const p = (pos || '').toLowerCase(), ab = posAbbr(pos);
+  if (/lanz|pitch/.test(p)) return /zurd|lhp/.test(p) ? 'LHP' : 'RHP';
+  if (ab) return ab;
+  if (/receptor|catcher/.test(p)) return 'C';
+  if (/jardin|outfield/.test(p)) return /central/.test(p) ? 'CF' : 'OF';
+  if (/campocorto/.test(p)) return 'SS';
+  if (/primera/.test(p)) return '1B'; if (/segunda/.test(p)) return '2B'; if (/tercera/.test(p)) return '3B';
+  return '';
 }
+function alumniCard(a) {
+  const ps = posShort(a.position), pitcher = isPitcher(a.position) || /HP$/.test(ps) || !a.position;
+  return `<article class="pcard">
+    <div class="art">${a.photo ? `<img class="photo" src="${esc(a.photo)}" alt="${esc(a.name)}" loading="lazy">` : pitcher ? SIL() : BATS}</div>
+    <div class="tl">${a.debut_year ? esc(a.debut_year) : '—'}<small>${a.debut_year ? t('colDeb') : t('porConf')}</small></div>
+    <div class="tr">${a.status === 'MLB' ? '<span class="badge-mlb">MLB</span>' : `<span class="badge-sig">${t('firmado')}</span>`}</div>
+    <div class="bt"><h3>${esc(a.name)}</h3>
+      <div class="meta">${ps ? `<span class="chip-pos">${esc(ps)}</span>` : ''}<span>${esc(a.debut_team || a.signed_by || a.position || '')}</span></div></div>
+  </article>`;
+}
+function alumniGrid(list) { return `<div class="cards">${list.map(alumniCard).join('')}</div>`; }
 function counts() {
   const list = ST.alumni || [], mlb = list.filter((a) => a.status === 'MLB').length, signed = Number(ST.site.signed_count) || list.length;
   return `<div class="big-count"><div><b>${mlb}</b>${t('enMLB')}</div><div><b>${signed}${ST.site.signed_count ? '+' : ''}</b>${t('firmados')}</div></div>`;
@@ -177,11 +194,13 @@ function playerCard(p) {
   const s = p.latest ? evalSummary(p.latest) : {};
   const hit = p.latest && p.latest.kind === 'hitting' ? p.latest.hitting || {} : null;
   const stats = hit ? [['AVG', hit.avg], ['HR', hit.hr], ['OBP', hit.obp]]
-    : [[t('veloMax'), s.veloMax != null ? num(s.veloMax) : null], ['RPM', s.spin != null ? Math.round(s.spin) : null], ['Spin %', s.spinEff != null ? num(s.spinEff) : null]];
-  return `<a class="pc" href="#jugador-${esc(p.id)}">
-    <div class="ph">${avatar(p.name, p.photo, 100, '0')}</div>
-    <div class="bd"><h3>${esc(p.name)}</h3>
-      <div class="meta">${esc(p.position || '')}${p.age ? `, ${p.age} ${t('anios')}` : ''}</div>
+    : [['MPH', s.veloMax != null ? num(s.veloMax) : null], ['RPM', s.spin != null ? Math.round(s.spin) : null], ['Spin %', s.spinEff != null ? num(s.spinEff) : null]];
+  const ps = posShort(p.position);
+  return `<a class="pcard" href="#jugador-${esc(p.id)}">
+    <div class="art">${p.photo ? `<img class="photo" src="${esc(p.photo)}" alt="${esc(p.name)}" loading="lazy">` : isPitcher(p.position) || !p.position ? SIL() : BATS}</div>
+    <div class="tl">${p.age ? esc(p.age) : '—'}<small>${t('edad')}</small></div>
+    <div class="bt"><h3>${esc(p.name)}</h3>
+      <div class="meta">${ps ? `<span class="chip-pos">${esc(ps)}</span>` : ''}<span>${esc(posName(p.position))}</span></div>
       ${p.latest ? `<div class="stats">${stats.map(([l, v]) => `<div><b>${v == null || v === '' ? '—' : esc(v)}</b><span>${esc(l)}</span></div>`).join('')}</div>` : ''}
     </div></a>`;
 }
@@ -189,31 +208,34 @@ function playerCard(p) {
 // ---------- vistas ----------
 function vHome() {
   const s = ST.site, al = ST.alumni || [];
-  const names = al.filter((a) => a.status === 'MLB').map((a) => a.name);
-  const players = ((ST.players || []).filter((p) => p.featured).length ? ST.players.filter((p) => p.featured) : ST.players || []).slice(0, 3);
+  const mlb = al.filter((a) => a.status === 'MLB').length;
+  const players = ((ST.players || []).filter((p) => p.featured).length ? ST.players.filter((p) => p.featured) : ST.players || []).slice(0, 4);
   const hist = S_('history').split(/\n\s*\n/).filter(Boolean);
   return `
   <section class="hero">
     <div class="wrap hero-in">
-      <div><h1>${t('heroH')}</h1><p class="sub">${t('heroP')}</p>
-        <div class="cta"><a class="btn btn-red" href="#peloteros">${t('verPel')}</a><a class="btn btn-line" href="#academia">${t('nuestraHist')}</a></div></div>
-      <div class="hero-vis">${s.hero_player ? `<img src="${esc(s.hero_player)}" alt="" style="max-height:540px;margin:0 auto">` : mechArt()}</div>
+      <div><span class="kick"><i></i>${t('kick')}</span><h1>${t('heroH')}</h1><p class="sub">${t('heroP')}</p>
+        <div class="cta"><a class="btn btn-red" href="#peloteros">${t('verPel')}</a><a class="btn btn-glass" href="#academia">${t('nuestraHist')}</a></div></div>
+      <div class="hud">
+        <div class="hud-top"><span>${t('hudT')}</span><b>${t('hudL')}</b></div>
+        ${s.hero_player ? `<img src="${esc(s.hero_player)}" alt="" style="max-height:480px;margin:0 auto">` : mechArt()}
+        <div class="hud-stats"><div><b>${mlb}</b><span>${t('hud1')}</span></div><div><b>80</b><span>${t('hud2')}</span></div><div><b>1998</b><span>${t('hud3')}</span></div></div>
+      </div>
     </div>
-    ${names.length ? `<div class="alumni-strip"><div class="wrap"><span class="lead-t">${t('salieron')}</span><ul>${names.map((n) => `<li>${esc(n)}</li>`).join('')}</ul></div></div>` : ''}
   </section>
-  <section class="sec"><div class="wrap">
+  <section class="sec band"><div class="wrap">
     <div class="sec-h"><div><h2>${t('mlbH')}</h2><p>${t('mlbP')}</p></div>${counts()}</div>
-    ${rosterRows(al.slice(0, 6))}
-    <p style="margin-top:22px"><a class="link" href="#grandes-ligas">${t('verLista')}</a></p>
+    ${alumniGrid(al.slice(0, 8))}
+    <p style="margin-top:26px"><a class="link" href="#grandes-ligas">${t('verLista')} →</a></p>
   </div></section>
-  <section class="sec mist"><div class="wrap">
+  <section class="sec"><div class="wrap">
     <div class="sec-h"><div><h2>${t('metH')}</h2><p>${t('metP')}</p></div></div>
-    <ol class="steps">${[1, 2, 3, 4].map((n) => `<li class="step"><i>${n}</i><h3>${t('m' + n + 'h')}</h3><p>${t('m' + n + 'p')}</p></li>`).join('')}</ol>
+    <ol class="steps">${[1, 2, 3, 4].map((n) => `<li class="step"><i>${t('paso')} ${n}</i><h3>${t('m' + n + 'h')}</h3><p>${t('m' + n + 'p')}</p></li>`).join('')}</ol>
   </div></section>
-  ${s.founder_name ? `<section class="sec"><div class="wrap founder-sec">${founderArt()}
-    <div><p class="quote">${esc(hist[0] || S_('about'))}</p><p class="more">${esc(S_('about'))}</p><a class="btn btn-navy" href="#academia">${t('leerHist')}</a></div></div></section>` : ''}
-  ${players.length ? `<section class="sec mist"><div class="wrap"><div class="sec-h"><div><h2>${t('destH')}</h2><p>${t('destP')}</p></div><a class="btn btn-ghost-n" href="#peloteros">${t('verTodos')}</a></div>
-    <div class="players">${players.map(playerCard).join('')}</div></div></section>` : ''}
+  ${s.founder_name ? `<section class="sec band"><div class="wrap founder-sec">${founderArt()}
+    <div><p class="quote">${esc(hist[0] || S_('about'))}</p><p class="more">${esc(S_('about'))}</p><a class="btn btn-blue" href="#academia">${t('leerHist')}</a></div></div></section>` : ''}
+  ${players.length ? `<section class="sec"><div class="wrap"><div class="sec-h"><div><h2>${t('destH')}</h2><p>${t('destP')}</p></div><a class="btn btn-glass" href="#peloteros">${t('verTodos')}</a></div>
+    <div class="cards">${players.map(playerCard).join('')}</div></div></section>` : ''}
   ${vContact()}`;
 }
 function founderArt() {
@@ -226,13 +248,13 @@ function vPlayers() {
   return `<section class="sec"><div class="wrap">
     <div class="sec-h"><div><h2>${t('todosH')}</h2></div>
       <div class="filters" role="group">${[['all', 'todos'], ['p', 'lanz'], ['h', 'bat']].map(([f, k]) => `<button class="chip ${ST.filter === f ? 'on' : ''}" data-filter="${f}" aria-pressed="${ST.filter === f}">${t(k)}</button>`).join('')}</div></div>
-    ${list.length ? `<div class="players">${list.map(playerCard).join('')}</div>` : `<div class="empty-n">${t('sinPel')}</div>`}
+    ${list.length ? `<div class="cards">${list.map(playerCard).join('')}</div>` : `<div class="empty-n">${t('sinPel')}</div>`}
   </div></section>`;
 }
 function vAlumni() {
   return `<section class="sec"><div class="wrap">
     <div class="sec-h"><div><h2>${t('mlbH')}</h2><p>${t('mlbP')}</p></div>${counts()}</div>
-    ${rosterRows(ST.alumni || [])}</div></section>`;
+    ${alumniGrid(ST.alumni || [])}</div></section>`;
 }
 function vAcademy() {
   const hist = S_('history').split(/\n\s*\n/).filter(Boolean);
@@ -246,7 +268,7 @@ function vAcademy() {
         ${s.address ? `<div class="place"><small>${t('sede')}</small><b>${esc(s.address)}</b><small>República Dominicana</small>${s.maps_url ? `<a class="btn btn-red btn-sm" style="margin-top:12px;width:fit-content" href="${esc(s.maps_url)}" target="_blank" rel="noopener"><span class="icon">${IC.pin}</span>${t('comoLlegar')}</a>` : ''}</div>` : ''}
       </aside>
     </div></div></section>
-  ${tl.length ? `<section class="sec mist"><div class="wrap"><div class="sec-h"><div><h2>${t('trayectoria')}</h2></div></div>
+  ${tl.length ? `<section class="sec band"><div class="wrap"><div class="sec-h"><div><h2>${t('trayectoria')}</h2></div></div>
     <div class="tline">${tl.map(([a, b, c]) => `<div class="tl-i"><div class="tl-y">${esc(a)}</div><h4>${esc(b || '')}</h4><p>${esc(c || '')}</p></div>`).join('')}</div></div></section>` : ''}
   ${ST.coaches.length ? `<section class="sec"><div class="wrap"><div class="sec-h"><div><h2>${t('entren')}</h2></div></div>
     <div class="grid g3">${ST.coaches.map((c) => `<div class="coach">${avatar(c.name, c.photo, 60)}<div><h4>${esc(c.name)}</h4><div style="color:var(--muted);font-size:15px">${esc(c.role || '')}</div></div></div>`).join('')}</div></div></section>` : ''}`;
@@ -269,12 +291,12 @@ function vContact() {
     [t('correo'), s.email, s.email ? 'mailto:' + s.email : null], ['Instagram', ig ? '@' + ig : '', ig ? 'https://instagram.com/' + ig : null],
     [t('tel'), s.phone, s.phone ? 'tel:' + s.phone.replace(/[^\d+]/g, '') : null], ['WhatsApp', s.whatsapp, wa ? 'https://wa.me/' + wa : null], [t('dir'), s.address, s.maps_url || null],
   ].filter((x) => x[1]);
-  return `<section class="sec navy" id="contacto-sec"><div class="wrap contact-grid">
+  return `<section class="sec"><div class="wrap"><div class="contact-box">
     <div><div class="sec-h" style="margin-bottom:0"><div><h2>${t('contH')}</h2><p>${t('contP')}</p></div></div>
       <div class="cta">${s.maps_url ? `<a class="btn btn-red" href="${esc(s.maps_url)}" target="_blank" rel="noopener"><span class="icon">${IC.pin}</span>${t('comoLlegar')}</a>` : ''}
-        ${s.email ? `<a class="btn btn-white" href="mailto:${esc(s.email)}"><span class="icon">${IC.mail}</span>${t('escribenos')}</a>` : ''}${wa ? `<a class="btn btn-line" href="https://wa.me/${wa}" target="_blank" rel="noopener">WhatsApp</a>` : ''}</div></div>
+        ${s.email ? `<a class="btn btn-glass" href="mailto:${esc(s.email)}"><span class="icon">${IC.mail}</span>${t('escribenos')}</a>` : ''}${wa ? `<a class="btn btn-glass" href="https://wa.me/${wa}" target="_blank" rel="noopener">WhatsApp</a>` : ''}</div></div>
     <div class="c-list">${rows.map(([l, v, href]) => href ? `<a href="${esc(href)}" ${/^https/.test(href) ? 'target="_blank" rel="noopener"' : ''}><span>${esc(l)}</span><b>${esc(v)}</b></a>` : `<div><span>${esc(l)}</span><b>${esc(v)}</b></div>`).join('')}</div>
-  </div></section>`;
+  </div></div></section>`;
 }
 
 // ---------- perfil del pelotero ----------
@@ -312,7 +334,7 @@ function printReport(p, ev) {
 async function vPlayer(id) {
   if (!ST.player || ST.player.player.id !== id) {
     try { ST.player = await api('public/players/' + encodeURIComponent(id)); ST.ptab = 'resumen'; ST.cmp = [null, null]; }
-    catch { return `<div class="wrap" style="padding:80px 28px"><div class="empty-n"><p>${t('noEnc')}</p><a class="btn btn-navy" style="margin-top:16px" href="#peloteros">${t('volver')}</a></div></div>`; }
+    catch { return `<div class="wrap" style="padding:80px 28px"><div class="empty-n"><p>${t('noEnc')}</p><a class="btn btn-blue" style="margin-top:16px" href="#peloteros">${t('volver')}</a></div></div>`; }
   }
   const { player: p, evaluations: ev, media } = ST.player;
   const pitch = ev.filter((e) => e.kind !== 'hitting'), hit = ev.filter((e) => e.kind === 'hitting');
@@ -324,7 +346,7 @@ async function vPlayer(id) {
       <div class="tile hot">${I.gauge}<div><div class="l">${t('veloMax')}</div><div class="v">${num(s.veloMax)}<small>MPH</small></div></div></div>
       <div class="tile">${I.spin}<div><div class="l">${t('rpm')}</div><div class="v">${s.spin != null ? Math.round(s.spin).toLocaleString('en-US') : '—'}</div></div></div>
       <div class="tile">${I.layers}<div><div class="l">${t('spinEff')}</div><div class="v">${num(s.spinEff)}<small>%</small></div></div></div></div>` : '';
-  const hitTiles = lastHit ? `<h3 style="font-size:30px;text-transform:uppercase;color:var(--navy);margin:28px 0 14px">${t('bateo')}</h3><div class="grid g4">${HIT_FIELDS.filter(([k]) => lastHit.hitting[k] != null && lastHit.hitting[k] !== '')
+  const hitTiles = lastHit ? `<h3 style="font-size:26px;text-transform:uppercase;color:#fff;margin:28px 0 14px">${t('bateo')}</h3><div class="grid g4">${HIT_FIELDS.filter(([k]) => lastHit.hitting[k] != null && lastHit.hitting[k] !== '')
     .map(([k, l]) => `<div class="tile"><div><div class="l">${esc(l)}</div><div class="v">${esc(lastHit.hitting[k])}</div></div></div>`).join('')}</div>` : '';
   const chart = (k, title, unit) => `<div class="box" style="margin-top:20px"><h3>${title}</h3>${lineChart([{ points: pitch.map((e) => ({ x: fmtDate(e.date, ST.lang), y: evalSummary(e)[k] })) }], { unit })}</div>`;
   let body = '';
@@ -338,7 +360,7 @@ async function vPlayer(id) {
           return `<tr><td>${fmtDate(e.date, ST.lang)}</td><td>${e.device === 'pro2' ? 'PRO 2.0' : e.device === 'pitching' ? 'Pitching' : '—'}</td><td class="num">${num(a.velo)}${d('velo')}</td><td class="num">${num(a.veloMax)}${d('veloMax')}</td><td class="num">${a.spin != null ? Math.round(a.spin) : '—'}${d('spin')}</td><td class="num">${num(a.spinEff)}${d('spinEff')}</td></tr>`; }).join('')}
         </tbody></table></div>` : noEval; break;
     case 'stats':
-      body = last ? `<div class="box"><p style="color:var(--muted);margin-bottom:10px">${t('ultima')}: <b style="color:var(--navy)">${fmtDate(last.date, ST.lang)}</b>, Rapsodo ${last.device === 'pro2' ? 'PRO 2.0' : 'Pitching'}</p>${pitchTypeTable(last)}</div>${hitTiles}` : hitTiles || noEval; break;
+      body = last ? `<div class="box"><p style="color:var(--muted);margin-bottom:10px">${t('ultima')}: <b style="color:#fff">${fmtDate(last.date, ST.lang)}</b>, Rapsodo ${last.device === 'pro2' ? 'PRO 2.0' : 'Pitching'}</p>${pitchTypeTable(last)}</div>${hitTiles}` : hitTiles || noEval; break;
     case 'evo':
       body = pitch.length ? chart('veloMax', t('evo'), 'MPH') + chart('spin', t('evoSpin'), 'RPM') + chart('spinEff', t('evoEff'), '%') : noEval; break;
     case 'cmp': {
@@ -356,7 +378,7 @@ async function vPlayer(id) {
   return `<div class="wrap" style="padding-bottom:80px">
     <nav class="crumb"><a href="#peloteros">${t('peloteros')}</a> / ${esc(p.name)}</nav>
     <div class="prof">
-      <div class="ph">${avatar(p.name, p.photo, 240, '0')}</div>
+      <div class="pcard"><div class="art">${p.photo ? `<img class="photo" src="${esc(p.photo)}" alt="${esc(p.name)}">` : isPitcher(p.position) || !p.position ? SIL() : BATS}</div>${posShort(p.position) ? `<div class="tr"><span class="chip-pos">${esc(posShort(p.position))}</span></div>` : ''}</div>
       <div><h1>${esc(p.name)}${p.featured ? `<i class="ok" aria-hidden="true">${IC.check}</i>` : ''}</h1>
         <div class="role">${posAbbr(p.position) ? `<b>${esc(posAbbr(p.position))}</b>` : ''}${esc(posName(p.position))}</div>
         ${facts.length ? `<div class="facts">${facts.map(([l, v]) => `<div>${esc(l)}<b>${esc(v)}</b></div>`).join('')}</div>` : ''}
@@ -365,7 +387,7 @@ async function vPlayer(id) {
       </div>
       <div class="prof-act">
         ${video ? `<button class="btn btn-red" data-play="${esc(video.url)}"><span class="icon">${I.play}</span>${t('verVideo')}</button>` : ''}
-        <button class="btn btn-ghost-n" data-act="report"><span class="icon">${IC.dl}</span>${t('descargar')}</button>
+        <button class="btn btn-glass" data-act="report"><span class="icon">${IC.dl}</span>${t('descargar')}</button>
       </div>
     </div>
     <div class="tabs" role="tablist">${[['resumen', 'resumen'], ['evals', 'evals'], ['stats', 'stats'], ['evo', 'evolucion'], ['cmp', 'comparar'], ['gal', 'gal']].map(([k, l]) => `<button class="tab ${ST.ptab === k ? 'on' : ''}" role="tab" aria-selected="${ST.ptab === k}" data-ptab="${k}">${t(l)}</button>`).join('')}</div>
@@ -403,6 +425,10 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('[data-act=report]') && ST.player) { printReport(ST.player.player, ST.player.evaluations); return; }
   const z = e.target.closest('[data-zoom]');
   if (z) { const d = document.createElement('div'); d.className = 'light'; d.innerHTML = `<img src="${esc(z.dataset.zoom)}" alt="">`; d.onclick = () => d.remove(); document.body.appendChild(d); }
+});
+document.addEventListener('pointermove', (e) => {
+  const c = e.target.closest && e.target.closest('.pcard'); if (!c) return;
+  const r = c.getBoundingClientRect(); c.style.setProperty('--x', ((e.clientX - r.left) / r.width) * 100 + '%'); c.style.setProperty('--y', ((e.clientY - r.top) / r.height) * 100 + '%');
 });
 document.addEventListener('change', (e) => { const c = e.target.dataset.cmp; if (c !== undefined) { ST.cmp[+c] = +e.target.value; render(); } });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('.light')?.remove(); });

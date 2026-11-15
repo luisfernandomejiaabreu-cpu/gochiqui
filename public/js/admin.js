@@ -179,6 +179,7 @@ function vPlayers() {
       ${A.players.map((p) => `<tr><td>${avatar(p.name, p.photo, 40)}</td><td><b>${esc(p.name)}</b>${p.featured ? ' <span class="tag tag-red">Destacado</span>' : ''}</td><td>${esc(p.position || '—')}</td><td class="num">${p.age ?? '—'}</td><td>${esc(p.bats || '—')}/${esc(p.throws || '—')}</td><td class="num">${cnt(p.id)}</td>
         <td>${p.published && p.consent ? statusTag(true, 'Visible') : !p.consent ? '<span class="tag tag-red">Sin autorización</span>' : statusTag(false, '', 'Oculto')}</td>
         <td><div class="actions">${p.published && p.consent ? `<a class="btn btn-dark btn-sm" href="/#jugador-${esc(p.id)}" target="_blank">Ver</a>` : ''}
+          <label class="btn btn-dark btn-sm photo-btn" title="Subir foto"><span class="icon">${I.upload}</span>Foto<input type="file" accept="image/*" data-photo="players" data-id="${p.id}"></label>
           <button class="btn btn-dark btn-sm" data-act="report" data-id="${p.id}" title="Ficha imprimible"><span class="icon">${I.print}</span></button>
           <button class="btn btn-dark btn-sm" data-act="edit-player" data-id="${p.id}">Editar</button>
           <button class="btn btn-dark btn-sm" data-act="del-player" data-id="${p.id}">Eliminar</button></div></td></tr>`).join('')}
@@ -355,11 +356,12 @@ const alumniFields = [
 function vAlumni() {
   return shell('Grandes Ligas', 'Egresados de la academia que firmaron o llegaron a MLB.', `
     <div class="card panel"><div class="ph-row"><h3>${A.alumni.length} egresados · ${A.alumni.filter((a) => a.status === 'MLB').length} en MLB</h3><button class="btn btn-red btn-sm" data-act="new-alumni"><span class="icon">${I.plus}</span>Agregar</button></div>
+    <div class="ok-note" style="margin-bottom:12px">Las fotos se ven en la web como tarjetas de jugador. Usa fotos verticales (de pie o de medio cuerpo) que tengas permiso de usar.</div>
     ${A.alumni.some((a) => a.needs_review) ? '<div class="note" style="margin-bottom:12px">Hay egresados marcados "por confirmar": hay varios peloteros con ese nombre en MLB. Completa su posición y debut.</div>' : ''}
     <div class="scroll-x"><table class="tbl"><thead><tr><th></th><th>Nombre</th><th>Posición</th><th>Estado</th><th>Debut MLB</th><th>Web</th><th></th></tr></thead><tbody>
-    ${A.alumni.map((a) => `<tr><td>${avatar(a.name, a.photo, 38)}</td><td><b>${esc(a.name)}</b>${a.needs_review ? ' <span class="tag tag-amber">Por confirmar</span>' : ''}</td><td>${esc(a.position || '—')}</td><td>${esc(a.status)}</td>
+    ${A.alumni.map((a) => `<tr><td>${a.photo ? `<img class="al-thumb" src="${esc(a.photo)}" alt="">` : '<div class="al-thumb">Sin foto</div>'}</td><td><b>${esc(a.name)}</b>${a.needs_review ? ' <span class="tag tag-amber">Por confirmar</span>' : ''}</td><td>${esc(a.position || '—')}</td><td>${esc(a.status)}</td>
       <td>${a.debut_year ? esc(a.debut_year) + ' · ' + esc(a.debut_team || '') : '—'}</td><td>${statusTag(a.published, 'Visible', 'Oculto')}</td>
-      <td><div class="actions"><button class="btn btn-dark btn-sm" data-act="edit-alumni" data-id="${a.id}">Editar</button><button class="btn btn-dark btn-sm" data-act="del-alumni" data-id="${a.id}">Eliminar</button></div></td></tr>`).join('')}
+      <td><div class="actions"><label class="btn btn-red btn-sm photo-btn"><span class="icon">${I.upload}</span>${a.photo ? 'Cambiar foto' : 'Subir foto'}<input type="file" accept="image/*" data-photo="alumni" data-id="${a.id}"></label><button class="btn btn-dark btn-sm" data-act="edit-alumni" data-id="${a.id}">Editar</button><button class="btn btn-dark btn-sm" data-act="del-alumni" data-id="${a.id}">Eliminar</button></div></td></tr>`).join('')}
     </tbody></table></div></div>`);
 }
 async function editRecord(table, fields, rec = {}, title) {
@@ -512,8 +514,15 @@ document.addEventListener('input', (e) => {
   else if (t.dataset.hit) R.data.hitting[t.dataset.hit] = t.value;
   else if (t.dataset.b && t.type !== 'checkbox') R.data[t.dataset.b] = t.value;
 });
-document.addEventListener('change', (e) => {
+document.addEventListener('change', async (e) => {
   const t = e.target;
+  if (t.dataset.photo && t.files && t.files[0]) {
+    const table = t.dataset.photo, rec = (table === 'alumni' ? A.alumni : A.players).find((x) => x.id === t.dataset.id);
+    try { toast('Subiendo foto…'); const up = await uploadFile(t.files[0], 'photo');
+      await api(`admin/${table}/${rec.id}`, { method: 'PUT', body: { name: rec.name, photo_key: up.key } }); toast('Foto guardada. Ya se ve en la web.'); refresh(); }
+    catch (er) { toast(er.message); }
+    return;
+  }
   if (t.id === 'evf') { A.evFilter = t.value; render(); return; }
   if (t.id === 'period') { A.period = t.value; render(); return; }
   if (t.dataset.cmp !== undefined) { A.cmp[+t.dataset.cmp] = t.value; render(); return; }
