@@ -330,7 +330,9 @@ function vAcademy() {
   ${tl.length ? `<section class="sec band"><div class="wrap"><div class="sec-h"><div><h2>${t('trayectoria')}</h2></div></div>
     <div class="tline">${tl.map(([a, b, c]) => `<div class="tl-i"><div class="tl-y">${esc(a)}</div><h4>${esc(b || '')}</h4><p>${esc(c || '')}</p></div>`).join('')}</div></div></section>` : ''}
   ${ST.coaches.length ? `<section class="sec"><div class="wrap"><div class="sec-h"><div><h2>${t('entren')}</h2></div></div>
-    <div class="grid g3">${ST.coaches.map((c) => `<div class="coach">${avatar(c.name, c.photo, 60)}<div><h4>${esc(c.name)}</h4><div style="color:var(--muted);font-size:15px">${esc(c.role || '')}</div></div></div>`).join('')}</div></div></section>` : ''}`;
+    <div class="cards sm coaches">${ST.coaches.map((c) => `<div class="pcard sig coach-c">
+      <div class="art">${c.photo ? `<img class="photo" src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy">` : SIL()}</div>
+      <div class="bt"><h3>${esc(c.name)}</h3><div class="meta"><span>${esc(c.role || '')}</span></div>${c.bio ? `<p class="c-bio">${esc(c.bio)}</p>` : ''}</div></div>`).join('')}</div></div></section>` : ''}`;
 }
 function galleryGrid(items) {
   return `<div class="gal">${items.map((m) => `<figure>${m.kind === 'video'
